@@ -1,20 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from "react";
+import { View, Text } from "react-native";
+import api from "./Backend/api";
 
-export default function App() {
+export default function CarList() {
+  const [cars, setCars] = useState<any[]>([]);
+
+  useEffect(() => {
+    api.get("/cars")
+      .then(res => setCars(res.data))
+      .catch(err => console.warn("API error:", err?.message || err));
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View>
+      {cars.map(c => <Text key={c.car_id}>{c.brand} {c.model}</Text>)}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
