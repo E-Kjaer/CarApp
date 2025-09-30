@@ -23,7 +23,7 @@ export default function CarList() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get<Car[]>("/cars")
+    api.get<Car[]>("/getCars")
       .then(res => setCars(res.data))
       .catch(err => console.warn("API error:", err))
       .finally(() => setLoading(false));
