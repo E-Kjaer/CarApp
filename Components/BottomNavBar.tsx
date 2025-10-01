@@ -44,12 +44,16 @@ export default function BottomNavBar() {
                 }
                 return <Ionicons name={name} size={size} color={color} />;
               },
-            tabBarActiveTintColor: "tomato",
-            tabBarInactiveTintColor: "gray",
+            tabBarActiveTintColor: "#474355",
+            tabBarInactiveTintColor: "#474355",
             headerShown: false,
+            tabBarInactiveBackgroundColor: "#ECE7F0",
+            tabBarActiveBackgroundColor: "#E0D8EF",
+            tabBarLabel: ""
+
           })}
         >
-          <Tab.Screen name="Explore" component={Home} />
+          <Tab.Screen name="Explore" component={Home}/>
           <Tab.Screen name="Bookings" component={SettingsScreen} />
           <Tab.Screen name="MyCars" component={SettingsScreen} />
           <Tab.Screen name = "Profile" component={SettingsScreen} />
