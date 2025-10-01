@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer} from "@react-navigation/native";
 import { StyleSheet, Text, View } from 'react-native';
 import Home from "/Users/christinagrevy/projects/CarApp/Home";
-import Icon from 'react-native-ionicons';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export type RootTabParamList = {
     Home: undefined;
@@ -26,25 +26,33 @@ export default function BottomNavBar() {
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, color, size }) => {
-              let iconName;
-  
-              if (route.name === "Home") {
-                iconName = focused
-                  ? "ios-information-circle"
-                  : "ios-information-circle-outline";
-              } else if (route.name === "Settings") {
-                iconName = focused ? "ios-list" : "ios-list-outline";
-              }
-  
-              return <Icon name={iconName} size={size} color={color} />;
-            },
+            tabBarIcon: ({ color, size, focused }) => {
+                let name: keyof typeof Ionicons.glyphMap;
+    
+                switch (route.name) {
+                  case "Explore":
+                    name = focused ? "car" : "car-outline";
+                    break;
+                  case "Bookings":
+                    name = focused ? "bookmark" : "bookmark-outline";
+                    break;
+                  case "MyCars":
+                    name = focused ? "clipboard" : "clipboard-outline";
+                    break;
+                  default:
+                    name = focused ? "person" : "person-outline"; // Profile
+                }
+                return <Ionicons name={name} size={size} color={color} />;
+              },
             tabBarActiveTintColor: "tomato",
             tabBarInactiveTintColor: "gray",
+            headerShown: false,
           })}
         >
-          <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Settings" component={SettingsScreen} />
+          <Tab.Screen name="Explore" component={Home} />
+          <Tab.Screen name="Bookings" component={SettingsScreen} />
+          <Tab.Screen name="MyCars" component={SettingsScreen} />
+          <Tab.Screen name = "Profile" component={SettingsScreen} />
         </Tab.Navigator>
       </NavigationContainer>
     );
