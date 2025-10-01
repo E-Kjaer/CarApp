@@ -13,15 +13,16 @@ const db = new sqlite3.Database('carapp.db');
 
 db.serialize(() => {
 
+  //Nulstiller tabellerne hver gang serveren startes.
   db.run(`DROP TABLE IF EXISTS rents`);
   db.run(`DROP TABLE IF EXISTS car`);
-  db.run(`DROP TABLE IF EXISTS renter`);
-  db.run(`DROP TABLE IF EXISTS owner`);
   db.run(`DROP TABLE IF EXISTS user`);
 
+  // Laver de forskellige tabeller
   db.run(`CREATE TABLE IF NOT EXISTS user (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     phonenumber TEXT NOT NULL,
     password TEXT NOT NULL,
@@ -55,14 +56,15 @@ db.serialize(() => {
 
   )`);
 
-
-  db.run(`INSERT INTO user (username, name, phonenumber, password, is_owner, rating) VALUES
-    ('alicej', 'Alice Johnson', '+14155550111', 'pass123', 1, 4.9),
-    ('bobm', 'Bob Martinez', '+14155550222', 'pass456', 0, 4.2),
-    ('charlies', 'Charlie Smith', '+14155550333', 'pass789', 0, 3.8),
-    ('dianap', 'Diana Prince', '+14155550444', 'pass321', 1, 4.7),
-    ('ethanh', 'Ethan Hunt', '+14155550555', 'pass654', 0, 4.5)
+ // Indsætter dummy data ind til alle tabellerne
+  db.run(`INSERT INTO user (username, email, name, phonenumber, password, is_owner, rating) VALUES
+  ('alicej', 'alice@example.com', 'Alice Johnson', '+14155550111', 'pass123', 1, 4.9),
+  ('bobm', 'bob@example.com', 'Bob Martinez', '+14155550222', 'pass456', 0, 4.2),
+  ('charlies', 'charlie@example.com', 'Charlie Smith', '+14155550333', 'pass789', 0, 3.8),
+  ('dianap', 'diana@example.com', 'Diana Prince', '+14155550444', 'pass321', 1, 4.7),
+  ('ethanh', 'ethan@example.com', 'Ethan Hunt', '+14155550555', 'pass654', 0, 4.5)
 `);
+
 
   db.run(`INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, images, owner_id) VALUES
     ('Tesla', 'Model 3', 'A sleek electric car with autopilot features.', 45000, 'Electric', 350, 5, 'San Francisco, CA', '["tesla_model3_1.jpg","tesla_model3_2.jpg"]', 1),
@@ -81,32 +83,14 @@ db.serialize(() => {
     (3, 5, '2025-10-20', '2025-10-25')
 `);
 
-
-
+  });
 app.get('/getAllUsers', (req, res) => {
-  db.all('SELECT * FROM owner', [], (err, rows) => {
+  db.all('SELECT * FROM user', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
     res.json(rows);
   });
 });
-app.get('/getAllRenters', (req, res) => {
-  db.all('SELECT * FROM user WHERE', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-app.get('/getAllRenters', (req, res) => {
-  db.all('SELECT * FROM user WHERE', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
-app.get('/getALLCars', (req, res) => {
-  db.all('SELECT * FROM car', [], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(rows);
-  });
-});
+
 app.get('/getAllRents', (req, res) => {
   db.all('SELECT * FROM rents', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -140,7 +124,7 @@ app.get('/getCar/:id', (req, res) => {
 app.get('/getRenter/:id', (req, res) => {
   const { id } = req.params;
   db.all(
-    'SELECT * FROM renter WHERE renter_id = ?', 
+    'SELECT * FROM user WHERE user_id = ?', 
     [id], 
     (err, row) => {
       if(err) return res.status(500).json({error: err.message});
@@ -149,7 +133,104 @@ app.get('/getRenter/:id', (req, res) => {
     });
 });
 
+app.get('/getRentsByCar/:id', (req, res) => {
+  const { id } = req.params;
+  db.all(
+    'SELECT * FROM rents WHERE car_id = ?',
+    [id],
+    (err, rows) => {
+      if(err) return res.status(500).json({error: err.message});
+      if(!row) return res.status(404).json({error: 'rents not found'});
+      res.json(rows);
+    });
+});
+app.get('/getRentsByOwner/:id', (req, res) => {
+  const { id } = req.params;
+  db.all(
+    'SELECT rents.* FROM rents JOIN car on rents.car_id = car.car_id WHERE owner_id = ?',
+    [id],
+    (err, rows) => {
+      if(err) return res.status(500).json({error: err.message});
+      if(!row) return res.status(404).json({error: 'rents not found'});
+      res.json(rows);
+    });
+});
+app.get('/getRentsByRenter/:id', (req, res) => {
+  const { id } = req.params;
+  db.all(
+    'SELECT * FROM rents WHERE renter_id = ?',
+    [id],
+    (err, rows) => {
+      if(err) return res.status(500).json({error: err.message});
+      if(!row) return res.status(404).json({error: 'rents not found'});
+      res.json(rows);
+    });
+});
 
+app.get('/filterCars', (req, res) => {
+  const { brand, model, minPrice, maxPrice, fuel_type, seats, location, owner_id} = req.query;
+
+  let sql = 'SELECT * FROM car';
+  let categories = [];
+  let values = [];
+
+  if(brand) {
+    categories.push("LOWER(brand) = ?");
+    values.push(brand.toLowerCase());
+  }
+  
+
+  if(model) {
+    categories.push("LOWER(model) = ?");
+    values.push(model.toLowerCase());
+  }
+
+  if(minPrice) {
+    categories.push("price >= ?");
+    values.push(minPrice);
+  }
+
+  if(maxPrice) {
+    categories.push("price <= ?");
+    values.push(maxPrice);
+  }
+
+  if(fuel_type) {
+    categories.push("LOWER(fuel_type) = ?");
+    values.push(fuel_type.toLowerCase());
+  }
+
+  if(seats) {
+    categories.push("seats = ?");
+    values.push(seats);
+  }
+
+  if(location) {
+    categories.push("LOWER(location) = ?");
+    values.push(location.toLowerCase());
+  }
+
+  if(owner_id) {
+    categories.push("owner_id = ?");
+    values.push(owner_id);
+  }
+
+  if(categories.length > 0) {
+    sql += " WHERE " + categories.join(" AND ");
+  }
+
+  db.all(sql, values, (err, rows) => {
+    if(err) return res.status(500).json({error: err.message });
+    if(!rows) return res.status(404).json({error: "Cars not found"});
+    res.json(rows);
+  })
+});
+
+
+//Checker Login og returnerer user ved success
+app.post
+
+//endpoints for at indsætte data i tabeller
 app.post('/owner', (req, res) => {
   const { name, rating ,phonenumber } = req.body;
   db.run(
@@ -161,39 +242,7 @@ app.post('/owner', (req, res) => {
     }
   );
 });
-app.post('/renter', (req, res) => {
-  const { name, phonenumber } = req.body;
-  db.run(
-    'INSERT INTO renter (name, phonenumber) VALUES (?, ?)',
-    [name, phonenumber],
-    function(err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID, name, phonenumber });
-    }
-  );
-});
-app.post('/cars', (req, res) => {
-  const { brand, model, description, price, fuel_type, fuel_economy, range, seats, location, images } = req.body;
-  db.run(
-    'INSERT INTO car (brand, model, description, price, fuel_type, fuel_economy, range, seats, location, images) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [brand, model, description, price, fuel_type, fuel_economy, range, seats, location, images],
-    function(err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID, name, phonenumber });
-    }
-  );
-});
-app.post('/rents', (req, res) => {
-  const { renter_id, car_id, start_date, end_date } = req.body;
-  db.run(
-    'INSERT INTO renter (renter_id, car_id, start_date, end_date VALUES (?, ?, ?, ?)',
-    [renter_id, car_id, start_date, end_date],
-    function(err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID, name, phonenumber });
-    }
-  );
-});
+
 
 // Start server
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
