@@ -15,20 +15,11 @@ import SignupPage from "./SignupPage";
 import { User } from "../Authcontext"
 
 
-export default function App() {
-  return (
-    <AuthProvider>
-      <LoginScreen/>
-    </AuthProvider>
-
-  );
-}
-
-
-function LoginScreen() {
+export default function LoginPage() {
     const {user, login, logout} = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+
     const checkLogin = (username: string, password: string) => {
         api.post('/login', {
     identifier: username,
