@@ -59,48 +59,52 @@ export default function LoginPage() {
 }
 
 const styles = StyleSheet.create({
-  outerbox: {
-    backgroundColor: "#f5f5f5",
-    padding: 20,
-    margin: 20,
-    justifyContent: 'center',
-  },
-  rootbox: {
-    justifyContent: "center",
-    paddingTop: "75%"
+ outerbox: {
+  backgroundColor: "#f5f5f5",
+  padding: 20,
+  margin: 20,
+  justifyContent: "center",
+  width: "30%",       
+  borderRadius: 12,
+},
 
-  },
-  input: {
-      backgroundColor: "#fff",
-      borderWidth: 1,
-      borderColor: "#ccc",
-      borderRadius: 10,
-      paddingHorizontal: 15,
-      paddingVertical: 12,
-      fontSize: 16,
-      marginBottom: 15,
-      shadowColor: "#000",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 8,
-      elevation: 3,
-  },
-    loginButton: {
-        backgroundColor: "#ffffff",
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 10,
-        padding: 15,
-        alignItems: "center",
-        marginBottom: 10,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-        elevation: 3,
-    },
+rootbox: {
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+},
 
+input: {
+  backgroundColor: "#fff",
+  borderWidth: 1,
+  borderColor: "#ccc",
+  borderRadius: 10,
+  paddingHorizontal: 15,
+  paddingVertical: 12,
+  fontSize: 16,
+  marginBottom: 15,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 8,
+  elevation: 3,
+  width: "100%",      
+},
 
-
+loginButton: {
+  backgroundColor: "#ffffff",
+  borderWidth: 1,
+  borderColor: "#ccc",
+  borderRadius: 10,
+  paddingVertical: 15,
+  alignItems: "center",
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 8,
+  elevation: 3,
+  width: "60%",       
+  alignSelf: "center" 
+},  
 })
 
