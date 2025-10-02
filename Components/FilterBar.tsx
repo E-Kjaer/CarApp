@@ -4,22 +4,20 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 type FilterDef = { id: string; label: string; icon: keyof typeof Ionicons.glyphMap };
 
-const filters: FilterDef[] = [
-    { id: "1", label: "Filter",       icon: "options-outline" },
-    { id: "2", label: "Electric",     icon: "battery-charging-outline" },
-    { id: "3", label: "6+ Seats", icon: "heart-outline" },
-    { id: "4", label: "Luxury",        icon: "diamond-outline" },
-    { id: "5", label: "Budget", icon: "pricetag-outline"}
-] as const;
+export const filters: FilterDef[] = [
+    { id: "electric", label: "Electric", icon: "battery-charging-outline" },
+    { id: "seats6",   label: "6+ Seats", icon: "people-outline" },
+    { id: "luxury",   label: "Luxury",   icon: "diamond-outline" },
+    { id: "budget",   label: "Budget",   icon: "pricetag-outline" },
+];
 
-export default function FilterBar() {
-    const [activeFilters, setActiveFilters] = useState<string[]>([]);
-
-    const toggleFilter = (id: string) => {
-        setActiveFilters((prev) =>
-            prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
-        );
-    };
+export default function FilterBar({
+    active,
+    onToggle,
+    }: {
+    active: string[];
+    onToggle: (id: string) => void;
+}) {
 
     return (
         <View style={{ marginVertical: 10 }}>
@@ -30,11 +28,11 @@ export default function FilterBar() {
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={{ paddingHorizontal: 8 }}
                 renderItem={({ item }) => {
-                    const isActive = activeFilters.includes(item.id);
+                    const isActive = active.includes(item.id);
                     return (
                         <TouchableOpacity
                             style={[styles.filterButton, isActive && styles.activeFilter]}
-                            onPress={() => toggleFilter(item.id)}
+                            onPress={() => onToggle(item.id)}
                         >
                             <Ionicons
                                 name={item.icon}

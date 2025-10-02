@@ -16,7 +16,7 @@ interface Car {
   range?: number;
   seats: number;
   location: string;
-  images: string; // JSON string array
+  images: string;
   owner_id: number;
 }
 
@@ -32,10 +32,11 @@ export default function CarList() {
     setLoading(true);
     api.get<Car[]>("/filterCars", {
       params: {
-        electric: active.includes("electric") || undefined,
-        minSeats: active.includes("seats5") ? 5 : undefined,
-        maxPrice: active.includes("cheap") ? 300 : undefined,
-        location: query || undefined,
+        fuel_type: active.includes("electric") ? "Electric" : undefined,
+        seats:  active.includes("seats6") ? 6 : undefined,
+        maxPrice:  active.includes("budget") ? 25000 : undefined,
+        brand:  active.includes("luxury") ? "BMW" : undefined,
+        location:  query || undefined,
       },
     })
         .then((res) => setCars(res.data))
@@ -43,10 +44,10 @@ export default function CarList() {
         .finally(() => setLoading(false));
   };
 
-  // Hent biler første gang (uden filter)
+  // Get cars the first time (no filter)
   useEffect(() => {
     fetchCars();
-  }, []);
+  }, [active]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
 
@@ -58,12 +59,20 @@ export default function CarList() {
             placeholder="Search location..." style={styles.searchInput}
             value={query}
             onChangeText={setQuery}
+            returnKeyType="search"
+            onSubmitEditing={fetchCars}
         />
         <TouchableOpacity onPress={fetchCars}>
           <Ionicons name="search" size={24} style={styles.searchIcon}  />
         </TouchableOpacity>
       </View>
-      <FilterBar></FilterBar>
+      <FilterBar active={active}
+                 onToggle={(id: string) =>
+                     setActive((prev) =>
+                         prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+                     )
+                 }>
+      </FilterBar>
       <FlatList
         data={cars}
         keyExtractor={(item) => item.car_id.toString()}
