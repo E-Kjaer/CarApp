@@ -6,7 +6,6 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import { AuthProvider, useAuth } from "../Authcontext";
 import { useState } from 'react'
 import api from "../Backend/api";
@@ -34,7 +33,7 @@ export default function LoginPage() {
   return (
     <View style={styles.rootbox}>
       <View style={styles.outerbox}>
-        <Text>Login In Screen</Text>
+        <Text>Login!</Text>
         <TextInput
           placeholder="Username"
           value={username}
@@ -52,6 +51,10 @@ export default function LoginPage() {
               onPress={() => {checkLogin(username, password)}}>
           <Text>Login</Text>
         </TouchableOpacity>
+          <TouchableOpacity style={styles.loginButton}
+                            onPress={() => {checkLogin(username, password)}}>
+              <Text>Signup</Text>
+          </TouchableOpacity>
       </View>
     </View>
 
