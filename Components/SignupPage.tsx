@@ -19,7 +19,7 @@ export default function App() {
     );
 }
 
-function SignupScreen() {
+function SignupScreen({ navigation }: any) {
     const { user, login, logout } = useAuth();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -31,7 +31,7 @@ function SignupScreen() {
 
     const signUp =
         (username: string, password: string, email: string, name: string, phonenumber: string, is_owner: boolean) => {
-            api
+        api
                 .post("/insertUser", {
                     username: username,
                     password: password,
@@ -87,7 +87,7 @@ function SignupScreen() {
                     <Checkbox
                         value={is_owner}
                         onValueChange={setIs_Owner}
-                        color={is_owner ? "#2196F3" : undefined}   // ✅ color for checked
+                        color={is_owner ? "#2196F3" : undefined}
                         style={styles.checkbox}
                     />
                     <Text>Are you an owner?</Text>
