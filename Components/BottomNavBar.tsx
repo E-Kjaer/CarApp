@@ -2,8 +2,8 @@ import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer} from "@react-navigation/native";
 import { StyleSheet, Text, View } from 'react-native';
-import Home from "/Users/christinagrevy/projects/CarApp/Home";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import CarList from "../Views/CarList";
 
 export type RootTabParamList = {
     Home: undefined;
@@ -53,7 +53,7 @@ export default function BottomNavBar() {
 
           })}
         >
-          <Tab.Screen name="Explore" component={Home}/>
+          <Tab.Screen name="Explore" component={CarList}/>
           <Tab.Screen name="Bookings" component={SettingsScreen} />
           <Tab.Screen name="MyCars" component={SettingsScreen} />
           <Tab.Screen name = "Profile" component={SettingsScreen} />
