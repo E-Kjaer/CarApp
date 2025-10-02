@@ -31,7 +31,7 @@ function LoginScreen() {
     };
 
     /*
-    Til overstående skal du følge en lidt and struktur. Det er i bodien det skal sendes og ikke URL så noget ala
+    Til overstående skal du følge en lidt anden struktur. Det er i bodien det skal sendes og ikke URL så noget ala
     axios.post('/user', {
     firstName: 'Fred',
     lastName: 'Flintstone'
