@@ -264,7 +264,7 @@ app.post('/insertUser', async (req, res) => {
   );
 });
 
-app.post('insertCar', (req, res) => {
+app.post('/insertCar', (req, res) => {
   const { brand, model, description, price, fuel_type, range, seats, location, image, owner_id} = req.body;
   db.run('INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [brand, model, description, price, fuel_type, range, seats, location, image, owner_id],
     function(err) {
@@ -276,7 +276,7 @@ app.post('insertCar', (req, res) => {
   );
 });
 
-app.post('insertRents', (req, res) => {
+app.post('/insertRents', (req, res) => {
   const { renter_id, car_id, start_date, end_date} = req.body;
 
   db.run('INSERT INTO rents (renter_id, car_id, start_date, end_date) VALUES (?, ?, ?, ?)', [renter_id, car_id, start_date, end_date],
