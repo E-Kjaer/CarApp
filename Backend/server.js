@@ -52,8 +52,8 @@ db.serialize(() => {
    rent_id INTEGER PRIMARY KEY AUTOINCREMENT,
    renter_id INTEGER,
    car_id INTEGER,
-   start_date TEXT NOT NULL,
-   end_date TEXT NOT NULL,
+   start_date INTEGER NOT NULL,
+   end_date INTEGER NOT NULL,
    FOREIGN KEY (renter_id) REFERENCES user(user_id),
    FOREIGN KEY (car_id) REFERENCES car(car_id)
 
@@ -79,11 +79,11 @@ db.serialize(() => {
 
 
   db.run(`INSERT INTO rents (renter_id, car_id, start_date, end_date) VALUES
-    (2, 1, '2025-10-01', '2025-10-05'),
-    (3, 2, '2025-10-03', '2025-10-07'),
-    (5, 3, '2025-10-10', '2025-10-15'),
-    (2, 4, '2025-10-12', '2025-10-14'),
-    (3, 5, '2025-10-20', '2025-10-25')
+    (2, 1, '20251001', '20251005'),
+    (3, 2, '20251003', '20251007'),
+    (5, 3, '20251010', '20251015'),
+    (2, 4, '20251012', '20251014'),
+    (3, 5, '20251020', '20251025')
 `);
 
 });
@@ -247,37 +247,55 @@ app.post('/login', (req, res) => {
 
 //endpoints for at indsætte data i tabeller
 app.post('/insertUser', async (req, res) => {
-  const {username, email, name, phonenumber, password, is_owner, rating} = req.body;
+  try {
+    const { username, email, name, phonenumber, password, is_owner, rating } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 5);
 
-  const saltRounds = 5;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+    db.run(
+      'INSERT INTO user (username, email, name, phonenumber, password, is_owner, rating) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [username, email, name, phonenumber, hashedPassword, is_owner, rating],
+      function (err) {
+        if (err) return res.status(500).json({ error: err.message });
 
-
-  db.run('INSERT INTO user (username, email, name, phonenumber, password, is_owner, rating) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [username, email, name, phonenumber, hashedPassword, is_owner, rating],
-    function(err) {
-      if(err) {
-        return res.status(500).json({error: err.message});
+        const user_id = this.lastID;
+        db.get('SELECT * FROM user WHERE user_id = ?', [user_id], (err2, row) => {
+          if (err2) return res.status(500).json({ error: err2.message });
+          if (!row) return res.status(404).json({ error: 'user not found' });
+          return res.json(row);
+        });
       }
-      res.json({user_id: this.lastID});
-    }
-  );
+    );
+  } catch (e) {
+    return res.status(500).json({ error: e.message });
+  }
 });
+
 
 app.post('/insertCar', (req, res) => {
-  const { brand, model, description, price, fuel_type, range, seats, location, image, owner_id} = req.body;
-  db.run('INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [brand, model, description, price, fuel_type, range, seats, location, image, owner_id],
-    function(err) {
-      if(err) {
-        return res.status(500).json({error: err.message});
-      }
-      res.json({car_id: this.lastID});
+  const { brand, model, description, price, fuel_type, range, seats, location, image, owner_id } = req.body;
+
+  db.run(
+    'INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [brand, model, description, price, fuel_type, range, seats, location, image, owner_id],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      return res.json({ car_id: this.lastID });
     }
   );
 });
+
 
 app.post('/insertRents', (req, res) => {
   const { renter_id, car_id, start_date, end_date} = req.body;
+
+  db.get('SELECT * FROM rents WHERE car_id = ? AND start_date <= ? AND end_date >= ?', [car_id, start_date, end_date], (err, row) => {
+    if(err) {
+      return res.status(500).json({error: err.message});
+    }
+    if(row) {
+      return res.status(400).json({error: err.message});
+    }
+  });
 
   db.run('INSERT INTO rents (renter_id, car_id, start_date, end_date) VALUES (?, ?, ?, ?)', [renter_id, car_id, start_date, end_date],
     function(err) {
@@ -288,9 +306,6 @@ app.post('/insertRents', (req, res) => {
     }
   );
 });
-
-
-
 
 // Start server
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
