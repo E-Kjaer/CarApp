@@ -1,23 +1,58 @@
-import React from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from "react-native";
+import api from "../Backend/api";
 
 const INPUT_WIDTH = 260; 
 
+interface Rent {
+  rent_id: number;
+  renter_id: number;
+  car_id: number;
+  startDate: string;
+  endDate: string;
+}
+
 export default function BookingPage() {
+  const [getRentsByCar, setRents] = useState<Rent[]>([]);
+  const [startDate, setStartDate] = useState(""); 
+  const [endDate, setEndDate] = useState("");     
+  const car_id = 1;
+
+  useEffect(() => {
+    api
+      .get<Rent[]>(`/getRentsByCar/${car_id}`) 
+      .then(res => setRents(res.data))
+      .catch(err => console.warn("API error:", err));
+  }, []);
+
+  const confirmBooking = () => {
+    console.log("Booking confirmed:", { startDate, endDate, car_id });
+  };
+
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
         <Text style={styles.headerTxt}>How long would you like to book the vehicle?</Text>
-      <View style={styles.content}>
-        <Text style={styles.label}>Start Date</Text>
-        <TextInput placeholder="DD-MM-YYYY" style={styles.input} />
+        <View style={styles.content}>
+          <Text style={styles.label}>Start Date</Text>
+          <TextInput
+            placeholder="DD-MM-YYYY"
+            style={styles.input}
+            value={startDate}             
+            onChangeText={setStartDate}   
+          />
 
-        <Text style={styles.label}>End Date</Text>
-        <TextInput placeholder="DD-MM-YYYY" style={styles.input} />
+          <Text style={styles.label}>End Date</Text>
+          <TextInput
+            placeholder="DD-MM-YYYY"
+            style={styles.input}
+            value={endDate}
+            onChangeText={setEndDate}
+          />
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Confirm Dates</Text>
-        </TouchableOpacity>
+          <Pressable style={styles.button} onPress={confirmBooking}>
+            <Text style={styles.buttonText}>Confirm Dates</Text>
+          </Pressable>
         </View>
       </View>
     </View>
@@ -33,7 +68,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginTop: 225,
   },
-  headerTxt:{
+  headerTxt: {
     fontSize: 15,
     fontWeight: "bold",
   },
