@@ -7,9 +7,7 @@ import CarList from './Views/CarList';
 export default function App() {
   return (
     <View>
-      <Text>Hello</Text>
       <CarList></CarList>
-      <Text>Goodbye</Text>
     </View>
   );
   
