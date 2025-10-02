@@ -4,6 +4,7 @@ import { NavigationContainer} from "@react-navigation/native";
 import { StyleSheet, Text, View } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CarList from "../Views/CarList";
+import LoginPage from "./LoginPage"
 
 export type RootTabParamList = {
     Home: undefined;
@@ -23,12 +24,11 @@ function SettingsScreen() {
 
 export default function BottomNavBar() {
     return (
-      <NavigationContainer>
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ color, size, focused }) => {
                 let name: keyof typeof Ionicons.glyphMap;
-    
+
                 switch (route.name) {
                   case "Explore":
                     name = focused ? "car" : "car-outline";
@@ -56,9 +56,8 @@ export default function BottomNavBar() {
           <Tab.Screen name="Explore" component={CarList}/>
           <Tab.Screen name="Bookings" component={SettingsScreen} />
           <Tab.Screen name="MyCars" component={SettingsScreen} />
-          <Tab.Screen name = "Profile" component={SettingsScreen} />
+          <Tab.Screen name = "Profile" component={LoginPage} />
         </Tab.Navigator>
-      </NavigationContainer>
     );
   }
   
