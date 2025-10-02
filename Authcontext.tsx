@@ -1,26 +1,32 @@
 import React, { createContext, useContext, useState } from "react";
+import { Float } from "react-native/Libraries/Types/CodegenTypes";
+
+interface User {
+    user_id: String;
+    name: String;
+    email: String;
+    phonenumber: String;
+    is_owner: Boolean;
+    rating: Float;
+}
 
 interface AuthContextType {
-  user: string | null;
-  password: string | null;
-  login: (username: string) => void;
+  user: User | null;
+  login: (user: User) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
-  const login = (username: string, password: string) => {
-    setUser(username);
-    setPassword(password);
+  const [user, setUser] = useState<User | null>(null);
+  const login = (user: User) => {
+    setUser(user)
   };
   const logout = () => {
     setUser(null)
   };
-  const value = { user, password, login, logout  };
-
+  const value = { user, login, logout  };
 
   return (
     <AuthContext.Provider value={value}>
@@ -29,6 +35,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     
   );
 }
+
+export {User}
 
 export function useAuth(){
     const context = useContext(AuthContext)

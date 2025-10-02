@@ -25,26 +25,15 @@ function LoginScreen() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const checkLogin = (username: string, password: string) => {
-    api.get<User>("/getLogin?username=" + username + "&password=" + password)
-    .then(res => user)
-    .catch(err => console.warn("Wrong Credentials", err))
-    };
-
-    /*
-    Til overstående skal du følge en lidt anden struktur. Det er i bodien det skal sendes og ikke URL så noget ala
-    axios.post('/user', {
-    firstName: 'Fred',
-    lastName: 'Flintstone'
+  api.post('/login', {
+    identifier: username,
+    password: password
   })
-  .then(function (response) {
-    console.log(response);
-  })
+  .then(res => login(res.data))
   .catch(function (error) {
     console.log(error);
   });
-
-  dette er bare hurtigt taget fra https://axios-http.com/docs/post_example. Er træt så går i seng nu, men vi ser på det senere
-    */
+  }
 
   return (
     <View style={styles.rootbox}>
