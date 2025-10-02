@@ -30,6 +30,22 @@ function LoginScreen() {
     .catch(err => console.warn("Wrong Credentials", err))
     };
 
+    /*
+    Til overstående skal du følge en lidt and struktur. Det er i bodien det skal sendes og ikke URL så noget ala
+    axios.post('/user', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+  dette er bare hurtigt taget fra https://axios-http.com/docs/post_example. Er træt så går i seng nu, men vi ser på det senere
+    */
+
   return (
     <View style={styles.rootbox}>
       <View style={styles.outerbox}>
