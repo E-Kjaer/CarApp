@@ -8,22 +8,22 @@ interface Rent {
   rent_id: number;
   renter_id: number;
   car_id: number;
-  startDate: string;
-  endDate: string;
+  start_date: number;
+  end_date: number;
 }
 
 export default function BookingPage() {
   const [rents, setRents] = useState<Rent[]>([]);
-  const [startDate, setStartDate] = useState(""); 
-  const [endDate, setEndDate] = useState("");     
+  const [start_date, setStartDate] = useState(""); 
+  const [end_date, setEndDate] = useState("");     
   const car_id = 1;
+  const renter_id = 1;
 
-  const confirmDates = (startDate: string, endDate: string) => {
-    api.post('/getRentsByCar', { car_id, startDate, endDate }
-    ).then(res => setRents(res.data))
-    .catch(function (error) {
-      console.log(error);
-    })
+  const values = (start_date: string, end_date: string) => { 
+    api.
+    post('/insertRents', { renter_id: 1, car_id: 1, start_date, end_date }) 
+    .then(r => console.log('Created rent:', r.data)) 
+    .catch(e => console.log('POST error:', e.response?.data || e.message));
   }
 
   return (
@@ -33,21 +33,21 @@ export default function BookingPage() {
         <View style={styles.content}>
           <Text style={styles.label}>Start Date</Text>
           <TextInput
-            placeholder="DD-MM-YYYY"
+            placeholder="YYYY-MM-DD"
             style={styles.input}
-            value={startDate}             
+            value={start_date}             
             onChangeText={setStartDate}   
           />
 
           <Text style={styles.label}>End Date</Text>
           <TextInput
-            placeholder="DD-MM-YYYY"
+            placeholder="YYYY-MM-DD"
             style={styles.input}
-            value={endDate}
+            value={end_date}
             onChangeText={setEndDate}
           />
 
-          <Pressable style={styles.button} onPress={() => confirmDates(startDate, endDate)}>
+          <Pressable style={styles.button} onPress={() => values(start_date, end_date)}>
             <Text style={styles.buttonText}>Confirm Dates</Text>
           </Pressable>
         </View>
