@@ -1,6 +1,7 @@
 import express from 'express';
 import sqlite3 from 'sqlite3';
 import cors from 'cors';
+import bcrypt from 'bcrypt';
 
 
 const app = express();
@@ -17,6 +18,8 @@ db.serialize(() => {
   db.run(`DROP TABLE IF EXISTS rents`);
   db.run(`DROP TABLE IF EXISTS car`);
   db.run(`DROP TABLE IF EXISTS user`);
+
+  db.run('PRAGMA foreign_keys = ON');
 
   // Laver de forskellige tabeller
   db.run(`CREATE TABLE IF NOT EXISTS user (
@@ -40,7 +43,7 @@ db.serialize(() => {
     range INTEGER,
     seats INTEGER NOT NULL,
     location TEXT NOT NULL,
-    images TEXT NOT NULL,
+    image TEXT NOT NULL,
     owner_id INTEGER,
     FOREIGN KEY(owner_id) REFERENCES user(user_id)
   )`);
@@ -66,7 +69,7 @@ db.serialize(() => {
 `);
 
 
-  db.run(`INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, images, owner_id) VALUES
+  db.run(`INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES
     ('Tesla', 'Model 3', 'A sleek electric car with autopilot features.', 45000, 'Electric', 350, 5, 'San Francisco, CA', '["tesla_model3_1.jpg","tesla_model3_2.jpg"]', 1),
     ('Toyota', 'Camry', 'Reliable and fuel-efficient sedan.', 24000, 'Gasoline', 600, 5, 'Oakland, CA', '["toyota_camry_1.jpg","toyota_camry_2.jpg"]', 4),
     ('BMW', 'X5', 'Luxury SUV with spacious interior.', 60000, 'Hybrid', 650, 5, 'Palo Alto, CA', '["bmw_x5_1.jpg","bmw_x5_2.jpg"]', 1),
@@ -83,7 +86,7 @@ db.serialize(() => {
     (3, 5, '2025-10-20', '2025-10-25')
 `);
 
-  });
+});
 app.get('/getAllUsers', (req, res) => {
   db.all('SELECT * FROM user', [], (err, rows) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -228,20 +231,65 @@ app.get('/filterCars', (req, res) => {
 
 
 //Checker Login og returnerer user ved success
-app.post
+app.post('/login', (req, res) => {
+  const { identifier , password} = req.body;
+
+  db.get('SELECT * FROM user WHERE email = ? OR username = ?', [identifier, identifier], async (err, user) => {
+    if(err) return res.status(500).json({error: err.message});
+    if(!user) return res.status(401).json({error: "User not found"});
+
+    const succeeded = await bcrypt.compare(password, user.password);
+    if(!succeeded) return res.status(401).json({error: "Incorrect password"});
+
+    res.json({user});
+  });
+});
 
 //endpoints for at indsætte data i tabeller
-app.post('/owner', (req, res) => {
-  const { name, rating ,phonenumber } = req.body;
-  db.run(
-    'INSERT INTO owner (name, rating ,phonenumber) VALUES (?, ?, ?)',
-    [name, rating ,phonenumber],
+app.post('/insertUser', async (req, res) => {
+  const {username, email, name, phonenumber, password, is_owner, rating} = req.body;
+
+  const saltRounds = 5;
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+
+  db.run('INSERT INTO user (username, email, name, phonenumber, password, is_owner, rating) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [username, email, name, phonenumber, hashedPassword, is_owner, rating],
     function(err) {
-      if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID, name, phonenumber });
+      if(err) {
+        return res.status(500).json({error: err.message});
+      }
+      res.json({user_id: this.lastID});
     }
   );
 });
+
+app.post('insertCar', (req, res) => {
+  const { brand, model, description, price, fuel_type, range, seats, location, image, owner_id} = req.body;
+  db.run('INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?', [brand, model, description, price, fuel_type, range, seats, location, image, owner_id],
+    function(err) {
+      if(err) {
+        return res.status(500).json({error: err.message});
+      }
+      res.json({car_id: this.lastID});
+    }
+  );
+});
+
+app.post('insertRents', (req, res) => {
+  const { renter_id, car_id, start_date, end_date} = req.body;
+
+  db.run('INSERT INTO rents (renter_id, car_id, start_date, end_date) VALUES (?, ?, ?, ?)', [renter_id, car_id, start_date, end_date],
+    function(err) {
+      if(err) {
+        return res.status(500).json({error: err.message});
+      }
+      res.json({rents_id: this.lastID});
+    }
+  );
+});
+
+
 
 
 // Start server
