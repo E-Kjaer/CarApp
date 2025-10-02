@@ -101,10 +101,10 @@ app.get('/getAllRents', (req, res) => {
   });
 });
 
-app.get('/getOwner/:id', (req, res) => {
+app.get('/getUser/:id', (req, res) => {
   const { id } = req.params;
   db.all(
-    'SELECT * FROM owner WHERE owner_id = ?', 
+    'SELECT * FROM user WHERE user_id = ?', 
     [id], 
     (err, row) => {
       if(err) return res.status(500).json({error: err.message});
