@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CarList from "../Views/CarList";
 import LoginPage from "./LoginPage"
+import ProfileStack from "../Navigation/ProfileStack";
 
 export type RootTabParamList = {
     Home: undefined;
@@ -56,7 +57,7 @@ export default function BottomNavBar() {
           <Tab.Screen name="Explore" component={CarList}/>
           <Tab.Screen name="Bookings" component={SettingsScreen} />
           <Tab.Screen name="MyCars" component={SettingsScreen} />
-          <Tab.Screen name = "Profile" component={LoginPage} />
+          <Tab.Screen name = "Profile" component={ProfileStack} />
         </Tab.Navigator>
     );
   }

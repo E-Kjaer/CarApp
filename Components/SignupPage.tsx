@@ -5,21 +5,12 @@ import {
     TouchableOpacity,
     Text,
 } from "react-native";
-import { AuthProvider, useAuth } from "../Authcontext";
+import { useAuth } from "../Authcontext";
 import { useState } from "react";
 import Checkbox from "expo-checkbox";
 import api from "../Backend/api";
-import { User } from "../Authcontext";
 
-export default function App() {
-    return (
-        <AuthProvider>
-            <SignupScreen />
-        </AuthProvider>
-    );
-}
-
-function SignupScreen({ navigation }: any) {
+export default function SignupScreen({ navigation }: any) {
     const { user, login, logout } = useAuth();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -27,30 +18,39 @@ function SignupScreen({ navigation }: any) {
     const [phonenumber, setPhonenumber] = useState("");
     const [password, setPassword] = useState("");
     const [is_owner, setIs_Owner] = useState(false);
-    const [rating, setRating] = useState("");
 
-    const signUp =
-        (username: string, password: string, email: string, name: string, phonenumber: string, is_owner: boolean) => {
+    const signUp = (
+        username: string,
+        password: string,
+        email: string,
+        name: string,
+        phonenumber: string,
+        is_owner: boolean
+    ) => {
         api
-                .post("/insertUser", {
-                    username: username,
-                    password: password,
-                    email: email,
-                    name: name,
-                    phonenumber: phonenumber,
-                    is_owner: is_owner ? 1 : 0,
-                    rating: null
-                })
-                .then((res) => login(res.data))
-                .catch(function (error) {
-                    console.log(error);
-                });
+            .post("/insertUser", {
+                username: username,
+                password: password,
+                email: email,
+                name: name,
+                phonenumber: phonenumber,
+                is_owner: is_owner ? 1 : 0,
+                rating: null
+            })
+            .then((res) => {
+                console.log('API Response:', res.data);
+                login(res.data.user);
+                navigation.navigate("Profile");
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
         <View style={styles.rootbox}>
             <View style={styles.outerbox}>
-                <Text>Login Screen</Text>
+                <Text>Sign Up</Text>
                 <TextInput
                     placeholder="Username"
                     value={username}
@@ -95,9 +95,9 @@ function SignupScreen({ navigation }: any) {
 
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() => signUp(username, password, email,name, phonenumber, is_owner)}
+                    onPress={() => signUp(username, password, email, name, phonenumber, is_owner)}
                 >
-                    <Text>Login</Text>
+                    <Text>Sign Up</Text>
                 </TouchableOpacity>
             </View>
         </View>

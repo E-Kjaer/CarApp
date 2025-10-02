@@ -9,26 +9,35 @@ import {
 import { AuthProvider, useAuth } from "../Authcontext";
 import { useState } from 'react'
 import api from "../Backend/api";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ProfileStackParamList } from "../Navigation/ProfileStack";
+
 import SignupPage from "./SignupPage";
 
 import { User } from "../Authcontext"
 
 
 export default function LoginPage() {
+    const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
     const {user, login, logout} = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const checkLogin = (username: string, password: string) => {
         api.post('/login', {
-    identifier: username,
-    password: password
-  })
-  .then(res => login(res.data))
-  .catch(function (error) {
-    console.log(error);
-  });
-  }
+            identifier: username,
+            password: password
+        })
+            .then(res => {
+                console.log('API Response:', res.data);
+                login(res.data.user);
+                navigation.navigate("Profile");
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
   return (
     <View style={styles.rootbox}>
@@ -52,7 +61,7 @@ export default function LoginPage() {
           <Text>Login</Text>
         </TouchableOpacity>
           <TouchableOpacity style={styles.loginButton}
-                            onPress={() => {checkLogin(username, password)}}>
+                            onPress={() => navigation.navigate("SignUp")}>
               <Text>Signup</Text>
           </TouchableOpacity>
       </View>
