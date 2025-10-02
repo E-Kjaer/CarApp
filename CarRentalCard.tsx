@@ -7,9 +7,10 @@ interface CarProps {
   brand: string;
   model: string;
   rental_price: number; // per day, in DKK
+  onPressRent?: () => void;
 }
 
-const CarRentalCard = ({ image, brand, model, rental_price }: CarProps) => {
+const CarRentalCard = ({ image, brand, model, rental_price, onPressRent }: CarProps) => {
   return (
     <View style={styles.card}>
       {/* Left: car image */}
@@ -34,7 +35,12 @@ const CarRentalCard = ({ image, brand, model, rental_price }: CarProps) => {
         <View style={{ flex: 1 }} />
 
         {/* CTA */}
-        <TouchableOpacity activeOpacity={0.85} style={styles.rentButton}>
+        <TouchableOpacity activeOpacity={0.85}
+                          style={styles.rentButton}
+                          onPress={() => {
+                            console.log("Rent Now pressed");   // 👈 log så du kan se klik i metro
+                            onPressRent?.();
+                          }}>
           <Image source={require('./assets/calendar.png')} style={styles.calendarIcon} />
           <Text style={styles.buttonText}>Rent Now</Text>
         </TouchableOpacity>
