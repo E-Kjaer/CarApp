@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Pressable } from "react-native";
+import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import api from "../Backend/api";
 
 const INPUT_WIDTH = 260; 
@@ -13,21 +13,18 @@ interface Rent {
 }
 
 export default function BookingPage() {
-  const [getRentsByCar, setRents] = useState<Rent[]>([]);
+  const [rents, setRents] = useState<Rent[]>([]);
   const [startDate, setStartDate] = useState(""); 
   const [endDate, setEndDate] = useState("");     
   const car_id = 1;
 
-  useEffect(() => {
-    api
-      .get<Rent[]>(`/getRentsByCar/${car_id}`) 
-      .then(res => setRents(res.data))
-      .catch(err => console.warn("API error:", err));
-  }, []);
-
-  const confirmBooking = () => {
-    console.log("Booking confirmed:", { startDate, endDate, car_id });
-  };
+  const confirmDates = (startDate: string, endDate: string) => {
+    api.post('/getRentsByCar', { car_id, startDate, endDate }
+    ).then(res => setRents(res.data))
+    .catch(function (error) {
+      console.log(error);
+    })
+  }
 
   return (
     <View style={styles.screen}>
@@ -50,7 +47,7 @@ export default function BookingPage() {
             onChangeText={setEndDate}
           />
 
-          <Pressable style={styles.button} onPress={confirmBooking}>
+          <Pressable style={styles.button} onPress={() => confirmDates(startDate, endDate)}>
             <Text style={styles.buttonText}>Confirm Dates</Text>
           </Pressable>
         </View>
