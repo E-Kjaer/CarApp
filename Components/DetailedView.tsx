@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, FlatList, Image, Pressable } from "react-native";
 import api from "../Backend/api";
-import {ExploreStackParamList} from "../ExploreStack";
-import {RouteProp, useRoute} from "@react-navigation/native"; // adjust path
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {ExploreStackParamList} from "../ExploreNavTypes";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
+type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
+
 
 interface Car {
   car_id: number;
@@ -28,6 +31,7 @@ interface Owner {
 }
 
 export default function DetailedView() {
+  const navigation = useNavigation()
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
@@ -44,8 +48,7 @@ export default function DetailedView() {
 
   return (
     <View style={styles.container}>
-      {car != null && <Image 
-        source={{ uri: "assets/Peugeot_206_front_20090416.jpg"}}
+      {car != null && <Image source={require('../assets/Peugeot_206_front_20090416.jpg')}
         style={styles.image}
       />}
       <View style={styles.brand_container}>
@@ -75,7 +78,9 @@ export default function DetailedView() {
         <View style={styles.price_container}>
           {car != null && <Text>Price: {car.price} DKK/day</Text>}
         </View>
-        <Pressable style={styles.rent_now_button} onPress={() => {console.log("Rent now Clicked")}}>
+        <Pressable style={styles.rent_now_button} onPress={() => {
+          navigation.navigate("Booking");
+        }}>
           <Text>Rent Now</Text>
         </Pressable>
       </View>

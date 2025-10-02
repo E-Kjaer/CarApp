@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import api from "../Backend/api";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {ExploreStackParamList} from "../ExploreNavTypes";
 
+//type BookingRoute = RouteProp<ExploreStackParamList, "Booking">;
 const INPUT_WIDTH = 260; 
 
 interface Rent {
@@ -13,6 +16,7 @@ interface Rent {
 }
 
 export default function BookingPage() {
+  const navigation = useNavigation()
   const [rents, setRents] = useState<Rent[]>([]);
   const [start_date, setStartDate] = useState(""); 
   const [end_date, setEndDate] = useState("");     
