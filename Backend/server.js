@@ -113,17 +113,28 @@ app.get('/getUser/:id', (req, res) => {
     });
 });
 
+// Server
 app.get('/getCar/:id', (req, res) => {
-  const { id } = req.params;
-  db.all(
-    'SELECT * FROM car WHERE car_id = ?', 
-    [id], 
-    (err, row) => {
-      if(err) return res.status(500).json({error: err.message});
-      if(!row) return res.status(404).json({error: 'car not found'});
-      res.json(row);
-    });
+  const id = Number(req.params.id);
+
+  db.get('SELECT * FROM car WHERE car_id = ?', [id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'car not found' });
+
+    // Hvis images er gemt som JSON-string i DB:
+    try {
+      if (typeof row.images === 'string') {
+        row.images = JSON.parse(row.images); // forventer f.eks. '["https://.../img.jpg"]'
+      }
+    } catch (e) {
+      // fallback: gør det til et array
+      row.images = row.images ? [row.images] : [];
+    }
+
+    res.json(row); // <- et enkelt Car-objekt
+  });
 });
+
 app.get('/getRenter/:id', (req, res) => {
   const { id } = req.params;
   db.all(

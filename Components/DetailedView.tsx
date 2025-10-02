@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, FlatList, Image, Pressable } from "react-native";
-import api from "../Backend/api"; // adjust path
+import api from "../Backend/api";
+import {ExploreStackParamList} from "../ExploreStack";
+import {RouteProp, useRoute} from "@react-navigation/native"; // adjust path
 
-interface Props {
-  car_id: number
-}
+type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 
 interface Car {
   car_id: number;
@@ -27,38 +27,25 @@ interface Owner {
   rating: number
 }
 
-export default function DetailedView(props: Props) {
-  const testCar = {
-    car_id: 1,
-    brand: "Tesla",
-    model: "Model 3",
-    description: "An electric box on wheels",
-    price: 249,
-    fuel_type: "Electric",
-    range: 350,
-    seats: 5,
-    location: "Solrød",
-    images: ["../assets/Peugeot_206_front_20090416.jpg"], // JSON string array
-    owner_id: 1,
-    year: 2020
-  }
-
-  const [car, setCar] = useState<Car | null>(testCar);
+export default function DetailedView() {
+  const { params } = useRoute<DetailedRoute>();
+  const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get<Car>("/getCar/" + props.car_id)
-      .then(res => setCar(res.data))
-      .catch(err => console.warn("API error:", err))
-      .finally(() => setLoading(false));
-  }, []);
+    api
+        .get<Car>("/getCar/" + params.car_id)
+        .then((res) => setCar(res.data))
+        .catch((err) => console.warn("API error:", err))
+        .finally(() => setLoading(false));
+  }, [params.car_id]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
 
   return (
     <View style={styles.container}>
       {car != null && <Image 
-        source={{ uri: car.images[0]}}
+        source={{ uri: "assets/Peugeot_206_front_20090416.jpg"}}
         style={styles.image}
       />}
       <View style={styles.brand_container}>

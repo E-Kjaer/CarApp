@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import {View, Text, StyleSheet, ActivityIndicator, FlatList, TextInput, TouchableOpacity,} from "react-native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import api from "../Backend/api";
 import CarRentalCard from "../CarRentalCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FilterBar from "../Components/FilterBar";
+import {ExploreStackParamList} from "../ExploreStack";
+import {useNavigation} from "@react-navigation/native";
 
 interface Car {
   car_id: number;
@@ -20,7 +23,11 @@ interface Car {
   owner_id: number;
 }
 
+type ExploreNav = NativeStackNavigationProp<ExploreStackParamList, "CarList">;
+
+
 export default function CarList() {
+  const navigation = useNavigation<ExploreNav>();
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -78,7 +85,13 @@ export default function CarList() {
         keyExtractor={(item) => item.car_id.toString()}
         renderItem={({ item }) => (
             <CarRentalCard image={require('../assets/red-sports-car-png-1.png')}
-            rental_price={item.price} model={item.model} brand={item.brand}/>
+             rental_price={item.price}
+             model={item.model}
+             brand={item.brand}
+             onPressRent={()=>
+                 navigation.navigate("Detailed", { car_id: item.car_id })
+             }
+            />
         )}
       />
     </View>
