@@ -38,7 +38,7 @@ const CarRentalCard = ({ image, brand, model, rental_price, onPressRent }: CarPr
         <TouchableOpacity activeOpacity={0.85}
                           style={styles.rentButton}
                           onPress={() => {
-                            console.log("Rent Now pressed");   // 👈 log så du kan se klik i metro
+                            console.log("Rent Now pressed");
                             onPressRent?.();
                           }}>
           <Image source={require('./assets/calendar.png')} style={styles.calendarIcon} />
