@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
+import { useAuth } from "../Authcontext"; 
 
 interface ProfilePageProps {
     image: ImageSourcePropType;
@@ -12,6 +13,7 @@ interface ProfilePageProps {
 }
 
 const ProfilePage = ({ image, details, username, info, onSettings, onSupport }: ProfilePageProps) => {
+  const { logout } = useAuth();
     return (
     <View style={styles.container}>
       
@@ -37,6 +39,11 @@ const ProfilePage = ({ image, details, username, info, onSettings, onSupport }: 
           <Text style={styles.info}>{info}</Text>
           <Text style={styles.details}>{details}</Text>
         </View>
+
+        <TouchableOpacity style={styles.logoutBtn} onPress={logout}>
+          <Ionicons name="log-out-outline" size={20} color="black" />
+          <Text style={styles.logoutText}>Log out</Text>
+        </TouchableOpacity>
       </View>
     </View>
     );
@@ -98,4 +105,24 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#333',
     },
+
+    logoutBtn: {
+        marginTop: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        alignSelf: "flex-end",
+        paddingHorizontal: 12,
+        paddingVertical: 8,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 8,
+    },
+     logoutText: {
+        marginLeft: 6,
+        fontSize: 16,
+        fontWeight: "600",
+    },
+
+
+    
 });
