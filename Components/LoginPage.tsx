@@ -6,35 +6,39 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import { AuthProvider, useAuth } from "../Authcontext";
 import { useState } from 'react'
 import api from "../Backend/api";
-import SignupPage from "./SignupPage";
-
-import { User } from "../Authcontext"
-
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ProfileStackParamList } from "../Navigation/ProfileStack";
 
 export default function LoginPage() {
+    const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
     const {user, login, logout} = useAuth();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const checkLogin = (username: string, password: string) => {
         api.post('/login', {
-    identifier: username,
-    password: password
-  })
-  .then(res => login(res.data))
-  .catch(function (error) {
-    console.log(error);
-  });
-  }
+            identifier: username,
+            password: password
+        })
+            .then(res => {
+                console.log('API Response:', res.data);
+                console.log(res.data.user)
+                login(res.data.user);
+                navigation.navigate("Profile");
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
   return (
     <View style={styles.rootbox}>
       <View style={styles.outerbox}>
-        <Text>Login In Screen</Text>
+        <Text>Login!</Text>
         <TextInput
           placeholder="Username"
           value={username}
@@ -52,6 +56,10 @@ export default function LoginPage() {
               onPress={() => {checkLogin(username, password)}}>
           <Text>Login</Text>
         </TouchableOpacity>
+          <TouchableOpacity style={styles.loginButton}
+                            onPress={() => navigation.navigate("SignUp")}>
+              <Text>Signup</Text>
+          </TouchableOpacity>
       </View>
     </View>
 

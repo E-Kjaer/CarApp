@@ -2,12 +2,12 @@ import React, { createContext, useContext, useState } from "react";
 import { Float } from "react-native/Libraries/Types/CodegenTypes";
 
 interface User {
-    user_id: String;
-    name: String;
-    email: String;
-    phonenumber: String;
-    is_owner: Boolean;
-    rating: Float;
+    user_id: string;
+    name: string;
+    email: string;
+    phonenumber: string;
+    is_owner: boolean;
+    rating: number;
 }
 
 interface AuthContextType {
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-    
+
   );
 }
 
