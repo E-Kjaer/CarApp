@@ -51,18 +51,16 @@ export default function LoginPage() {
           onChangeText={(newText) => {setPassword(newText)}}
           style={styles.input}
         />
-
-        <TouchableOpacity style={styles.loginButton}
-              onPress={() => {checkLogin(username, password)}}>
-          <Text>Login</Text>
-        </TouchableOpacity>
           <TouchableOpacity style={styles.loginButton}
+                            onPress={() => {checkLogin(username, password)}}>
+              <Text style={styles.loginButtonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.signupButton}
                             onPress={() => navigation.navigate("SignUp")}>
-              <Text>Signup</Text>
+              <Text >Signup</Text>
           </TouchableOpacity>
       </View>
     </View>
-
   );
 }
 
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   padding: 20,
   margin: 20,
   justifyContent: "center",
-  width: "30%",       
+  width: "40%",
   borderRadius: 12,
 },
 
@@ -100,19 +98,41 @@ input: {
 },
 
 loginButton: {
-  backgroundColor: "#ffffff",
+  backgroundColor: "#6351a9",
   borderWidth: 1,
   borderColor: "#ccc",
   borderRadius: 10,
   paddingVertical: 15,
+    marginBottom: 5,
+    marginTop: 10,
   alignItems: "center",
   shadowColor: "#000",
   shadowOffset: { width: 0, height: 2 },
   shadowOpacity: 0.1,
   shadowRadius: 8,
   elevation: 3,
-  width: "60%",       
+  width: "80%",
   alignSelf: "center" 
-},  
+},
+signupButton: {
+    backgroundColor: "#ffffff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 10,
+    paddingVertical: 7.5,
+    marginBottom: 10,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 3,
+    width: "50%",
+    alignSelf: "center",
+},
+loginButtonText: {
+     color: "#ffffff",
+    fontWeight: "bold",
+}
 })
 
