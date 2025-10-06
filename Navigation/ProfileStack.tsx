@@ -11,11 +11,10 @@ export type ProfileStackParamList = {
     SignUp: undefined;
     Profile: undefined;
 };
-const Stack = createNativeStackNavigator<ProfileStackParamList>();
 
+const Stack = createNativeStackNavigator<ProfileStackParamList>();
 export default function ProfileStack() {
     const { user } = useAuth();
-
     return (
         <Stack.Navigator initialRouteName={user ? "Profile" : "Login"}>
             {user ? (

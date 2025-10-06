@@ -39,7 +39,7 @@ export default function SignupScreen({ navigation }: any) {
             })
             .then((res) => {
                 console.log('API Response:', res.data);
-                login(res.data.user);
+                login(res.data);
                 navigation.navigate("Profile");
             })
             .catch((error) => {

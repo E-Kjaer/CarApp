@@ -13,11 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "../Navigation/ProfileStack";
 
-import SignupPage from "./SignupPage";
-
-import { User } from "../Authcontext"
-
-
 export default function LoginPage() {
     const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
     const {user, login, logout} = useAuth();
@@ -31,6 +26,7 @@ export default function LoginPage() {
         })
             .then(res => {
                 console.log('API Response:', res.data);
+                console.log(res.data.user)
                 login(res.data.user);
                 navigation.navigate("Profile");
             })
