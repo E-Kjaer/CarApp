@@ -66,11 +66,10 @@ export default function LoginPage() {
 
 const styles = StyleSheet.create({
  outerbox: {
-  backgroundColor: "#f5f5f5",
   padding: 20,
   margin: 20,
   justifyContent: "center",
-  width: "40%",
+  width: "60%",
   borderRadius: 12,
 },
 

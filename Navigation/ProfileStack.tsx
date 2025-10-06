@@ -16,7 +16,12 @@ const Stack = createNativeStackNavigator<ProfileStackParamList>();
 export default function ProfileStack() {
     const { user } = useAuth();
     return (
-        <Stack.Navigator initialRouteName={user ? "Profile" : "Login"} screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName={user ? "Profile" : "Login"} screenOptions={{
+            headerTransparent: true,
+            headerTitle: "",
+            headerShadowVisible: false,
+            headerTintColor: "#1f1f1f",
+        }}>
             {user ? (
                 <Stack.Screen name="Profile" component={ProfileScreenWrapper} />
             ) : (

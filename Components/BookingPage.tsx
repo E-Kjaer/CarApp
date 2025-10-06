@@ -3,8 +3,11 @@ import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
 import api from "../Backend/api";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExploreStackParamList} from "../ExploreNavTypes";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
-//type BookingRoute = RouteProp<ExploreStackParamList, "Booking">;
+type BookingRoute = RouteProp<ExploreStackParamList, "Booking">;
+type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
+
 const INPUT_WIDTH = 260; 
 
 interface Rent {
@@ -16,19 +19,10 @@ interface Rent {
 }
 
 export default function BookingPage() {
-  const navigation = useNavigation()
-  const [rents, setRents] = useState<Rent[]>([]);
-  const [start_date, setStartDate] = useState(""); 
-  const [end_date, setEndDate] = useState("");     
-  const car_id = 1;
-  const renter_id = 1;
-
-  const values = (start_date: string, end_date: string) => { 
-    api.
-    post('/insertRents', { renter_id: 1, car_id: 1, start_date, end_date }) 
-    .then(r => console.log('Created rent:', r.data)) 
-    .catch(e => console.log('POST error:', e.response?.data || e.message));
-  }
+  const navigation = useNavigation<BookingNav>();
+  const { params } = useRoute<BookingRoute>();
+  const [start_date, setStartDate] = useState("");
+  const [end_date, setEndDate] = useState("");
 
   return (
     <View style={styles.screen}>
@@ -51,9 +45,22 @@ export default function BookingPage() {
             onChangeText={setEndDate}
           />
 
-          <Pressable style={styles.button} onPress={() => values(start_date, end_date)}>
+          <Pressable
+            style={styles.button}
+            onPress={async () => {
+              try {
+                await api.post('/insertRents', { renter_id: 1, car_id: 1, start_date, end_date });
+                navigation.navigate('Confirmation', { start_date, end_date });
+              } catch (e: any) {
+                console.log('POST error:', e?.response?.data || e?.message);
+              }
+            }}
+
+          >
             <Text style={styles.buttonText}>Confirm Dates</Text>
           </Pressable>
+
+
         </View>
       </View>
     </View>
