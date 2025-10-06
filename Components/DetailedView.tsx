@@ -20,7 +20,7 @@ interface Car {
   range?: number;
   seats: number;
   location: string;
-  images: string[]; // JSON string array
+  image: string; // JSON string array
   owner_id: number;
   year: number;
 }
@@ -48,7 +48,7 @@ export default function DetailedView() {
 
   return (
     <View style={styles.container}>
-      {car != null && <Image source={require('../assets/Peugeot_206_front_20090416.jpg')}
+      {car != null && <Image source={{uri: `http://localhost:3000/${car.image}`}}
         style={styles.image}
       />}
       <View style={styles.brand_container}>
