@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     padding: 16,
     gap: 16,
-    width: 500,
+    flex: 1,
+    //width: 500,
     margin: 10,
 
     // subtle drop shadow
@@ -72,8 +73,8 @@ const styles = StyleSheet.create({
   },
 
   carImage: {
-    width: 240,
-    height: 180,
+    width: 180,
+    height: 150,
     borderRadius: 16,
     resizeMode: 'cover',
   },
