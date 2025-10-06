@@ -8,6 +8,7 @@ import FilterBar from "../Components/FilterBar";
 import {ExploreStackParamList} from "../ExploreStack";
 import {useNavigation} from "@react-navigation/native";
 
+
 interface Car {
   car_id: number;
   brand: string;
@@ -19,7 +20,7 @@ interface Car {
   range?: number;
   seats: number;
   location: string;
-  images: string;
+  image: string;
   owner_id: number;
 }
 
@@ -48,7 +49,10 @@ export default function CarList() {
     })
         .then((res) => setCars(res.data))
         .catch((err) => console.warn("API error:", err))
-        .finally(() => setLoading(false));
+        .finally(() =>{
+            setLoading(false);
+
+        })
   };
 
   // Get cars the first time (no filter)
@@ -57,7 +61,7 @@ export default function CarList() {
   }, [active]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
-
+  console.log(cars[0].image + "WORK!")
   return (
     <View style={styles.container}>
       <View style={styles.searchBar}>
@@ -84,14 +88,12 @@ export default function CarList() {
         data={cars}
         keyExtractor={(item) => item.car_id.toString()}
         renderItem={({ item }) => (
-            <CarRentalCard image={require('../assets/red-sports-car-png-1.png')}
-             rental_price={item.price}
-             model={item.model}
-             brand={item.brand}
-             location={item.location}
-             onPressRent={()=>
-                 navigation.navigate("Detailed", { car_id: item.car_id })
-             }
+            <CarRentalCard
+                image={{uri: `http://localhost:3000/${item.image}`}}
+                rental_price={item.price}
+                model={item.model}
+                brand={item.brand}
+                onPressRent={() => navigation.navigate("Detailed", { car_id: item.car_id })}
             />
         )}
       />
