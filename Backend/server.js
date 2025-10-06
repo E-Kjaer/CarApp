@@ -219,9 +219,9 @@ app.get('/filterCars', (req, res) => {
     values.push(seats);
   }
 
-  if(location) {
-    categories.push("LOWER(location) = ?");
-    values.push(location.toLowerCase());
+  if (location) {
+    categories.push("LOWER(location) LIKE ?");
+    values.push(`%${location.toLowerCase()}%`);
   }
 
   if(owner_id) {
