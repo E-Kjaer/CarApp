@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CarList from "./Views/CarList";
 import DetailedView from "./Components/DetailedView";
 import BookingPage from "./Components/BookingPage";
+import ConfirmationPage from "./Components/ConfirmationPage";
 import {ExploreStackParamList} from "./ExploreNavTypes";
 
 
@@ -32,6 +33,11 @@ export default function ExploreStack() {
                 name="Booking"
                 component={BookingPage}
                // options={{title: "Booking"}}
+            />
+            <Stack.Screen
+                name="Confirmation"
+                component={ConfirmationPage}
+               // options={{title: "Confirmation"}}
             />
         </Stack.Navigator>
     );
