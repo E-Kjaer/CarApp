@@ -26,7 +26,10 @@ interface Car {
 }
 
 interface Owner {
-  owner_id: number,
+  user_id: number,
+  name: string,
+  email: string,
+  phonenumber: number,
   rating: number
 }
 
@@ -34,6 +37,7 @@ export default function DetailedView() {
   const navigation = useNavigation()
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car | null>(null);
+  const [owner, setOwner] = useState<Owner | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -44,8 +48,16 @@ export default function DetailedView() {
         .finally(() => setLoading(false));
   }, [params.car_id]);
 
-  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
+  useEffect(() => {
+    if(!car?.owner_id) return;
+    api
+      .get<Owner>("/getUser/" + car?.owner_id)
+      .then((res) => setOwner(res.data))
+      .catch((err) => console.warn("API error", err))
+  }, [car?.owner_id]);
 
+  console.log(owner?.user_id);
+  if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   return (
     <View style={styles.container}>
       {car != null && <Image source={require('../assets/Peugeot_206_front_20090416.jpg')}
@@ -71,8 +83,12 @@ export default function DetailedView() {
         {car != null && <Text>{car.description}</Text>}
       </View>
       <View style={styles.information_container}>
-        <Text style={styles.title}>Owner</Text>
-        {car != null && <Text>{car.owner_id}</Text>}
+        <Text style={styles.title}>Info about owner</Text>
+        {owner != null && <Text>{`Name:  ${owner.name}`}</Text>}
+        {owner != null && <Text>{`Email:  ${owner.email}`}</Text>}
+        {owner != null && <Text>{`Phone number:  ${owner.phonenumber}`}</Text>}
+        {owner != null && <Text>{`Rating:  ${owner.rating}`}</Text>}
+
       </View>
       <View style={styles.buttom_bar}>
         <View style={styles.price_container}>
@@ -81,7 +97,7 @@ export default function DetailedView() {
         <Pressable style={styles.rent_now_button} onPress={() => {
           navigation.navigate("Booking");
         }}>
-          <Text>Rent Now</Text>
+          <Text style={styles.rent_now_button_text}>Rent Now</Text>
         </Pressable>
       </View>
     </View>
@@ -134,6 +150,10 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     borderRadius: 8, 
     borderColor: "#ccc",
+    backgroundColor: "#6351a9",
+  },
+  rent_now_button_text: {
+    color: "#fff",
   },
   buttom_bar: {
     flex: 1,
@@ -158,7 +178,7 @@ const styles = StyleSheet.create({
   tag: {
     flex: 1, 
     flexDirection: "row", 
-    justifyContent: "space-between",
+    justifyContent: "center",
     maxHeight: 45, 
     padding: 12,
     maxWidth: 100, 
@@ -168,7 +188,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
   },
   tag_text: {
-    textAlign: "center",
+  
   },
   image: { width: "100%", height: 200, marginTop: 8, borderRadius: 8 },
 });

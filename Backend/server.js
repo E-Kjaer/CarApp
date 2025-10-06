@@ -103,7 +103,7 @@ app.get('/getAllRents', (req, res) => {
 
 app.get('/getUser/:id', (req, res) => {
   const { id } = req.params;
-  db.all(
+  db.get(
     'SELECT * FROM user WHERE user_id = ?', 
     [id], 
     (err, row) => {
