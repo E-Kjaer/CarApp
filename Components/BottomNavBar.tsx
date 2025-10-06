@@ -7,6 +7,7 @@ import CarList from "../Views/CarList";
 import LoginPage from "./LoginPage"
 import ExploreStack from "../ExploreStack";
 import ProfileStack from "../Navigation/ProfileStack";
+import {useAuth} from "../Authcontext";
 
 export type RootTabParamList = {
     Home: undefined;
@@ -25,6 +26,8 @@ function SettingsScreen() {
   }
 
 export default function BottomNavBar() {
+    const { user } = useAuth();
+    const isOwner = !!Number(user?.is_owner); // makes  0/1, "0"/"1", true/false to boolean values
     return (
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -56,8 +59,11 @@ export default function BottomNavBar() {
           })}
         >
           <Tab.Screen name="Explore" component={ExploreStack}/>
-          <Tab.Screen name="Bookings" component={SettingsScreen} />
-          <Tab.Screen name="MyCars" component={SettingsScreen} />
+            {user && (<Tab.Screen name="Bookings" component={SettingsScreen} />
+            )}
+            {isOwner && (
+                <Tab.Screen name="MyCars" component={SettingsScreen} />
+            )}
           <Tab.Screen name = "Profile" component={ProfileStack} />
         </Tab.Navigator>
     );
