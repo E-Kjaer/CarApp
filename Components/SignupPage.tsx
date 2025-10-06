@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
     },
     rootbox: {
         justifyContent: "center",
-        paddingTop: "75%",
     },
     input: {
         backgroundColor: "#fff",
