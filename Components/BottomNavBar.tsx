@@ -17,12 +17,19 @@ export type RootTabParamList = {
 const Tab = createBottomTabNavigator();
 
 // Dummy Settings-skærm
-function SettingsScreen() {
+function MyCarsScreen() {
     return (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>⚙️ Settings</Text>
+        <Text>My Cars</Text>
       </View>
     );
+  }
+  function BookingScreen() {
+      return (
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+              <Text>My Bookings</Text>
+          </View>
+      );
   }
 
 export default function BottomNavBar() {
@@ -59,10 +66,10 @@ export default function BottomNavBar() {
           })}
         >
           <Tab.Screen name="Explore" component={ExploreStack}/>
-            {user && (<Tab.Screen name="Bookings" component={SettingsScreen} />
+            {user && (<Tab.Screen name="Bookings" component={BookingScreen} />
             )}
             {isOwner && (
-                <Tab.Screen name="MyCars" component={SettingsScreen} />
+                <Tab.Screen name="MyCars" component={MyCarsScreen} />
             )}
           <Tab.Screen name = "Profile" component={ProfileStack} />
         </Tab.Navigator>

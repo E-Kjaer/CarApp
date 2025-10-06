@@ -105,7 +105,7 @@ export default function DetailedView() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 0, backgroundColor: "#F2EDF6", width: 400, height: 800},
+  container: { flex: 1, padding: 0, backgroundColor: "#F2EDF6"},
   brand_container: { 
     flex: 1 , 
     flexDirection: "row", 
@@ -160,11 +160,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     maxHeight: 100,
     width: "100%",
-    paddingLeft: 32,
+    paddingLeft: 16,
     paddingTop: 16,
-    paddingRight: 32,
+    paddingRight: 16,
     justifyContent: "space-between",
-    backgroundColor: "#E8DEF8", 
   },
   tags_container: {
     flex: 1, 

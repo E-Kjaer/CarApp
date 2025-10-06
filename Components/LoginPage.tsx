@@ -38,7 +38,7 @@ export default function LoginPage() {
   return (
     <View style={styles.rootbox}>
       <View style={styles.outerbox}>
-        <Text>Login!</Text>
+        <Text style={{fontWeight: "bold", marginBottom: 5}}>Login</Text>
         <TextInput
           placeholder="Username"
           value={username}
