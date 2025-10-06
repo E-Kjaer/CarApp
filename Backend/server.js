@@ -9,6 +9,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static('assets'));
 
 const db = new sqlite3.Database('carapp.db');
 
@@ -70,11 +71,11 @@ db.serialize(() => {
 
 
   db.run(`INSERT INTO car (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES
-    ('Tesla', 'Model 3', 'A sleek electric car with autopilot features.', 45000, 'Electric', 350, 5, 'San Francisco, CA', '["tesla_model3_1.jpg","tesla_model3_2.jpg"]', 1),
-    ('Toyota', 'Camry', 'Reliable and fuel-efficient sedan.', 24000, 'Gasoline', 600, 5, 'Oakland, CA', '["toyota_camry_1.jpg","toyota_camry_2.jpg"]', 4),
-    ('BMW', 'X5', 'Luxury SUV with spacious interior.', 60000, 'Hybrid', 650, 5, 'Palo Alto, CA', '["bmw_x5_1.jpg","bmw_x5_2.jpg"]', 1),
-    ('Honda', 'Civic', 'Compact and efficient car.', 22000, 'Gasoline', 500, 5, 'Berkeley, CA', '["honda_civic_1.jpg","honda_civic_2.jpg"]', 4),
-    ('Ford', 'Mustang', 'Sporty car with great performance.', 55000, 'Gasoline', 400, 4, 'San Jose, CA', '["ford_mustang_1.jpg","ford_mustang_2.jpg"]', 1)
+    ('Tesla', 'Model 3', 'A sleek electric car with autopilot features.', 450, 'Electric', 350, 5, 'San Francisco, CA', 'Tesla_Model_3.png', 1),
+    ('Toyota', 'Camry', 'Reliable and fuel-efficient sedan.', 240, 'Gasoline', 600, 5, 'Oakland, CA', 'Toyota_Camry.png', 4),
+    ('BMW', 'X5', 'Luxury SUV with spacious interior.', 600, 'Hybrid', 650, 5, 'Palo Alto, CA', 'Bmv_X5.png', 1),
+    ('Honda', 'Civic', 'Compact and efficient car.', 220, 'Gasoline', 500, 5, 'Berkeley, CA', 'Honda_Civic.png', 4),
+    ('Ford', 'Mustang', 'Sporty car with great performance.', 550, 'Gasoline', 400, 4, 'San Jose, CA', 'Ford_Mustang.png', 1)
 `);
 
 
