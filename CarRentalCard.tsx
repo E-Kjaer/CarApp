@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: 180,
     height: 150,
     borderRadius: 16,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 
   details: {

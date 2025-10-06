@@ -42,7 +42,7 @@ export default function CarList() {
       params: {
         fuel_type: active.includes("electric") ? "Electric" : undefined,
         seats:  active.includes("seats6") ? 6 : undefined,
-        maxPrice:  active.includes("budget") ? 25000 : undefined,
+        maxPrice:  active.includes("budget") ? 250 : undefined,
         brand:  active.includes("luxury") ? "BMW" : undefined,
         location:  query || undefined,
       },
@@ -61,7 +61,6 @@ export default function CarList() {
   }, [active]);
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
-  console.log(cars[0].image + "WORK!")
   return (
     <View style={styles.container}>
       <View style={styles.searchBar}>
