@@ -88,6 +88,7 @@ export default function CarList() {
              rental_price={item.price}
              model={item.model}
              brand={item.brand}
+             location={item.location}
              onPressRent={()=>
                  navigation.navigate("Detailed", { car_id: item.car_id })
              }

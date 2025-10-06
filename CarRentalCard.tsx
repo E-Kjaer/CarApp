@@ -6,11 +6,12 @@ interface CarProps {
   image: ImageSourcePropType;
   brand: string;
   model: string;
+  location: string
   rental_price: number; // per day, in DKK
   onPressRent?: () => void;
 }
 
-const CarRentalCard = ({ image, brand, model, rental_price, onPressRent }: CarProps) => {
+const CarRentalCard = ({ image, brand, model, location, rental_price, onPressRent }: CarProps) => {
   return (
     <View style={styles.card}>
       {/* Left: car image */}
@@ -23,6 +24,7 @@ const CarRentalCard = ({ image, brand, model, rental_price, onPressRent }: CarPr
           <View style={{ flexShrink: 1 }}>
             <Text style={styles.brand}>{brand}</Text>
             <Text style={styles.model}>{model}</Text>
+            <Text>{location}</Text>
           </View>
 
           <View style={styles.priceWrap}>
