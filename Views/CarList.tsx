@@ -91,6 +91,7 @@ export default function CarList() {
                 image={{uri: `http://localhost:3000/${item.image}`}}
                 rental_price={item.price}
                 model={item.model}
+                location={item.location}
                 brand={item.brand}
                 onPressRent={() => navigation.navigate("Detailed", { car_id: item.car_id })}
             />
