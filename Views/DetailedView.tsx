@@ -58,42 +58,42 @@ export default function DetailedView() {
 
   console.log(owner?.user_id);
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
-  return (
+  if (car && owner)
+    return (
     <View style={styles.container}>
-      {car != null && <Image source={{uri: `http://localhost:3000/${car.image}`}}
+      <Image source={{uri: `http://localhost:3000/${car.image}`}}
         style={styles.image}
-      />}
+      />
       <View style={styles.brand_container}>
-        {car != null &&
-            <Text style={styles.title}>{car.brand} {car.model}</Text>}
-        {car != null && <Text style={styles.sub_title}>{car.year}</Text>}
+        <Text style={styles.title}>{car.brand} {car.model}</Text>
+        <Text style={styles.sub_title}>{car.year}</Text>
       </View>
       <View style={styles.tags_container}>
         <View style={styles.tag}>
-          {car != null && <Text style={styles.tag_text}>{car.fuel_type}</Text>}
+          <Text style={styles.tag_text}>{car.fuel_type}</Text>
         </View>
         <View style={styles.tag}>
-          {car != null && <Text style={styles.tag_text}>{car.range} km</Text>}
+          <Text style={styles.tag_text}>{car.range} km</Text>
         </View>
         <View style={styles.tag}>
-          {car != null && <Text style={styles.tag_text}>{car.seats} seats</Text>}
+          <Text style={styles.tag_text}>{car.seats} seats</Text>
         </View>
       </View>
       <View style={styles.information_container}>
         <Text style={styles.title}>Vehicle Information</Text>
-        {car != null && <Text>{car.description}</Text>}
+        <Text>{car.description}</Text>
       </View>
       <View style={styles.information_container}>
         <Text style={styles.title}>Info about owner</Text>
-        {owner != null && <Text>{`Name:  ${owner.name}`}</Text>}
-        {owner != null && <Text>{`Email:  ${owner.email}`}</Text>}
-        {owner != null && <Text>{`Phone number:  ${owner.phonenumber}`}</Text>}
-        {owner != null && <Text>{`Rating:  ${owner.rating}`}</Text>}
+        <Text>{`Name:  ${owner.name}`}</Text>
+        <Text>{`Email:  ${owner.email}`}</Text>
+        <Text>{`Phone number:  ${owner.phonenumber}`}</Text>
+        <Text>{`Rating:  ${owner.rating}`}</Text>
 
       </View>
       <View style={styles.buttom_bar}>
         <View style={styles.price_container}>
-          {car != null && <Text>Price: {car.price} DKK/day</Text>}
+          <Text>Price: {car.price} DKK/day</Text>
         </View>
         <Pressable style={styles.rent_now_button} onPress={() => {
           navigation.navigate("Booking");
