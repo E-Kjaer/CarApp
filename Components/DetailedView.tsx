@@ -72,17 +72,17 @@ export default function DetailedView() {
       <View style={styles.tags_container}>
         <View style={styles.tag}>
           <Ionicons name={"battery-charging-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
           <Text style={styles.tag_text}>{car.fuel_type}</Text>
         </View>
         <View style={styles.tag}>
           <Ionicons name={"analytics-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
           <Text style={styles.tag_text}>{car.range} km</Text>
         </View>
         <View style={styles.tag}>
           <Ionicons name={"people-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
           <Text style={styles.tag_text}>{car.seats} seats</Text>
         </View>
       </View>
@@ -91,35 +91,39 @@ export default function DetailedView() {
         <Text>{car.description}</Text>
       </View>
       <View style={styles.information_container}>
-        <Text style={styles.title}>Info about owner</Text>
-        <View style={styles.info}>
-          <Ionicons name={"person-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
-          <Text>{owner.name}</Text>
+        <View style={styles.header_owner}>
+          <View style={styles.info}>
+            <Ionicons name={"person"} size={32}
+                      style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+            <Text style={styles.title}>{owner.name}</Text>
+          </View>
+        <View style={styles.rating}>
+          <Ionicons name={"star"} size={32}
+                    style={{ marginRight: 6 }}  color="#6351a9">
+          </Ionicons>
+          <Text style={styles.title}>{owner.rating}/5</Text>
         </View>
+        </View>
+
         <View style={styles.info}>
-          <Ionicons name={"mail-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
+          <Ionicons name={"mail"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
           <Text>{owner.email}</Text>
         </View>
         <View style={styles.info}>
-          <Ionicons name={"call-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
+          <Ionicons name={"call"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
           <Text>{owner.phonenumber}</Text>
-        </View>
-        <View style={styles.info}>
-          <Ionicons name={"star-outline"} size={18}
-                    style={{ marginRight: 6 }}></Ionicons>
-          <Text>{owner.rating}</Text>
         </View>
       </View>
       <View style={styles.buttom_bar}>
         <View style={styles.price_container}>
-          <Text>Price: {car.price} DKK/day</Text>
+          <Text>{car.price} DKK/day</Text>
         </View>
         <Pressable style={styles.rent_now_button} onPress={() => {
           navigation.navigate("Booking");
         }}>
+          <Ionicons name={"calendar-outline"} size={18} color={"white"}></Ionicons>
           <Text style={styles.rent_now_button_text}>Rent Now</Text>
         </Pressable>
       </View>
@@ -138,10 +142,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginLeft: 16,
     marginRight: 16, 
-    borderWidth: 1, 
+    borderWidth: 0,
     borderRadius: 8, 
-    borderColor: "#ccc",
-    backgroundColor: "#FFFFFF" 
+    backgroundColor: "#FFFFFF"
   },
   information_container: {
     flex: 1 , 
@@ -150,10 +153,8 @@ const styles = StyleSheet.create({
     marginBottom: 10, 
     marginLeft: 16,
     marginRight: 16, 
-    borderWidth: 1, 
-    borderRadius: 8, 
-    borderColor: "#ccc",
-    backgroundColor: "#FFFFFF" 
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF"
   },
   title: { fontSize: 18, fontWeight: "bold" },
   sub_title: { fontSize:18 },
@@ -161,21 +162,21 @@ const styles = StyleSheet.create({
     padding: 12, 
     marginBottom: 10, 
     height: 45,
-    borderWidth: 1, 
+    borderWidth: 0,
     borderRadius: 8, 
-    borderColor: "#ccc", 
     backgroundColor: "#FFFFFF"
   },
   rent_now_button: {
+    flexDirection: "row",
     padding: 12, 
     marginBottom: 10, 
     height: 45,
-    borderWidth: 1, 
+    borderWidth: 0,
     borderRadius: 8, 
-    borderColor: "#ccc",
     backgroundColor: "#6351a9",
   },
   rent_now_button_text: {
+    marginLeft: 3,
     color: "#fff",
   },
   buttom_bar: {
@@ -201,20 +202,35 @@ const styles = StyleSheet.create({
     flex: 1, 
     flexDirection: "row", 
     justifyContent: "center",
-    maxHeight: 45, 
+    alignItems: "center",
+    maxHeight: 35,
     padding: 12,
     maxWidth: 100, 
     borderWidth: 1, 
     borderRadius: 24, 
-    borderColor: "#ccc",
+    borderColor: "#6351a9",
     backgroundColor: "#FFFFFF",
   },
   tag_text: {
+    color: "#6351a9",
   
   },
-  info: {
-    flex: 1,
+  header_owner: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    paddingBottom: 2,
+    borderColor: "#6351a9"
+  },
+  info: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  rating: {
+    flexDirection: "row",
+    alignItems: "center"
   },
   image: { width: "100%", height: 200, marginTop: 8, borderRadius: 8 },
 });
