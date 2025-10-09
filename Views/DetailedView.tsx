@@ -36,8 +36,8 @@ interface Owner {
 export default function DetailedView() {
   const navigation = useNavigation()
   const { params } = useRoute<DetailedRoute>();
-  const [car, setCar] = useState<Car | null>(null);
-  const [owner, setOwner] = useState<Owner | null>(null);
+  const [car, setCar] = useState<Car>();
+  const [owner, setOwner] = useState<Owner>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,7 +64,8 @@ export default function DetailedView() {
         style={styles.image}
       />}
       <View style={styles.brand_container}>
-        {car != null && <Text style={styles.title}>{car.brand} {car.model}</Text>}
+        {car != null &&
+            <Text style={styles.title}>{car.brand} {car.model}</Text>}
         {car != null && <Text style={styles.sub_title}>{car.year}</Text>}
       </View>
       <View style={styles.tags_container}>
