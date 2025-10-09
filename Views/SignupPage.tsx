@@ -4,6 +4,7 @@ import {
     TextInput,
     TouchableOpacity,
     Text,
+    Alert
 } from "react-native";
 import { useAuth } from "../Contexts/Authcontext";
 import { useState } from "react";
@@ -44,6 +45,7 @@ export default function SignupScreen({ navigation }: any) {
             })
             .catch((error) => {
                 console.log(error);
+                Alert.alert("Signup failed", "",[{text: "OK"}])
             });
     };
 

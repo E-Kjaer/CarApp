@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+    Alert
 } from "react-native";
 import { AuthProvider, useAuth } from "../Contexts/Authcontext";
 import { useState } from 'react'
@@ -24,15 +25,16 @@ export default function LoginPage() {
             identifier: username,
             password: password
         })
-            .then(res => {
-                console.log('API Response:', res.data);
-                console.log(res.data.user)
-                login(res.data.user);
-                navigation.navigate("Profile");
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        .then(res => {
+            console.log('API Response:', res.data);
+            console.log(res.data.user)
+            login(res.data.user);
+            navigation.navigate("Profile");
+        })
+        .catch(function (error) {
+            //console.log(error);
+            Alert.alert("Login Failed", "Username or Password is incorrect", [{text: "OK"}])
+        });
     }
 
   return (
