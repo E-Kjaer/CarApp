@@ -4,6 +4,7 @@ import api from "../Backend/api";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExploreStackParamList} from "../ExploreNavTypes";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {Ionicons} from "@expo/vector-icons";
 
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
@@ -70,12 +71,18 @@ export default function DetailedView() {
       </View>
       <View style={styles.tags_container}>
         <View style={styles.tag}>
+          <Ionicons name={"battery-charging-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
           <Text style={styles.tag_text}>{car.fuel_type}</Text>
         </View>
         <View style={styles.tag}>
+          <Ionicons name={"analytics-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
           <Text style={styles.tag_text}>{car.range} km</Text>
         </View>
         <View style={styles.tag}>
+          <Ionicons name={"people-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
           <Text style={styles.tag_text}>{car.seats} seats</Text>
         </View>
       </View>
@@ -85,11 +92,26 @@ export default function DetailedView() {
       </View>
       <View style={styles.information_container}>
         <Text style={styles.title}>Info about owner</Text>
-        <Text>{`Name:  ${owner.name}`}</Text>
-        <Text>{`Email:  ${owner.email}`}</Text>
-        <Text>{`Phone number:  ${owner.phonenumber}`}</Text>
-        <Text>{`Rating:  ${owner.rating}`}</Text>
-
+        <View style={styles.info}>
+          <Ionicons name={"person-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
+          <Text>{owner.name}</Text>
+        </View>
+        <View style={styles.info}>
+          <Ionicons name={"mail-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
+          <Text>{owner.email}</Text>
+        </View>
+        <View style={styles.info}>
+          <Ionicons name={"call-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
+          <Text>{owner.phonenumber}</Text>
+        </View>
+        <View style={styles.info}>
+          <Ionicons name={"star-outline"} size={18}
+                    style={{ marginRight: 6 }}></Ionicons>
+          <Text>{owner.rating}</Text>
+        </View>
       </View>
       <View style={styles.buttom_bar}>
         <View style={styles.price_container}>
@@ -101,7 +123,7 @@ export default function DetailedView() {
           <Text style={styles.rent_now_button_text}>Rent Now</Text>
         </Pressable>
       </View>
-    </View>
+      </View>
   );
 }
 
@@ -189,6 +211,10 @@ const styles = StyleSheet.create({
   },
   tag_text: {
   
+  },
+  info: {
+    flex: 1,
+    flexDirection: "row",
   },
   image: { width: "100%", height: 200, marginTop: 8, borderRadius: 8 },
 });
