@@ -73,8 +73,8 @@ const styles = StyleSheet.create({
   },
 
   carImage: {
-    width: 180,
-    height: 150,
+    width: 120,
+    height: 100,
     borderRadius: 16,
     resizeMode: 'contain',
   },
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
 
   priceMeta: {
     fontSize: 14,
-    marginTop: 2,
+    marginTop: 2
   },
 
   rentButton: {
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 18,
     backgroundColor: '#6351a9',
+    marginTop: 5,
   },
 
   calendarIcon: {

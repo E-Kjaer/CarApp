@@ -8,6 +8,7 @@ import LoginPage from "../Views/LoginPage"
 import ExploreStack from "./ExploreStack";
 import ProfileStack from "./ProfileStack";
 import {useAuth} from "../Contexts/Authcontext";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type RootTabParamList = {
     Home: undefined;
@@ -33,6 +34,7 @@ function MyCarsScreen() {
   }
 
 export default function BottomNavBar() {
+    const insets = useSafeAreaInsets();  
     const { user } = useAuth();
     const isOwner = !!Number(user?.is_owner); // makes  0/1, "0"/"1", true/false to boolean values
     return (
@@ -61,8 +63,20 @@ export default function BottomNavBar() {
             headerShown: false,
             tabBarInactiveBackgroundColor: "#ECE7F0",
             tabBarActiveBackgroundColor: "#E0D8EF",
-            tabBarLabel: ""
-
+            tabBarShowLabel: false,
+            tabBarItemStyle: {
+              flexDirection: "column"
+            },
+            tabBarIconStyle: {
+              alignItems: "center",
+              marginTop: 10,
+            },
+            tabBarStyle: {
+              height: insets.bottom + 30,
+              paddingBottom: 0,
+              alignItems: "center"
+            },
+            //tabBarPosition: 100
           })}
         >
           <Tab.Screen name="Explore" component={ExploreStack}/>

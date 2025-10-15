@@ -4,12 +4,15 @@ import CarRentalCard from './Components/CarRentalCard'
 import BottomNavBar from './Navigation/BottomNavBar';
 import {AuthProvider} from "./Contexts/Authcontext";
 import {NavigationContainer} from "@react-navigation/native";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 export default function App() {
   return (
       <AuthProvider>
         <NavigationContainer>
-          <BottomNavBar />
+          <SafeAreaProvider>
+            <BottomNavBar/>
+          </SafeAreaProvider>
         </NavigationContainer>
       </AuthProvider>
   );
