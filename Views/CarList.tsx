@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import {View, Text, StyleSheet, ActivityIndicator, FlatList, TextInput, TouchableOpacity,} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator, FlatList, TextInput, TouchableOpacity } from "react-native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import api from "../api";
 import CarRentalCard from "../Components/CarRentalCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FilterBar from "../Components/FilterBar";
-import {ExploreStackParamList} from "../Navigation/ExploreStack";
-import {useNavigation} from "@react-navigation/native";
+import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
+import { useNavigation } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 
 interface Car {
@@ -26,12 +27,11 @@ interface Car {
 
 type ExploreNav = NativeStackNavigationProp<ExploreStackParamList, "CarList">;
 
-
 export default function CarList() {
   const navigation = useNavigation<ExploreNav>();
+  const insets = useSafeAreaInsets();
   const [cars, setCars] = useState<Car[]>([]);
   const [loading, setLoading] = useState(true);
-
   const [query, setQuery] = useState("");             // location search
   const [active, setActive] = useState<string[]>([]); // active filter search
 
@@ -62,7 +62,7 @@ export default function CarList() {
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, marginTop: insets.top + 20, paddingLeft: 16, paddingRight: 16, backgroundColor: "#fff" }}>
       <View style={styles.searchBar}>
         <TextInput
             placeholderTextColor={"#999999"}
@@ -102,7 +102,6 @@ export default function CarList() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, backgroundColor: "#fff" },
   card: { padding: 12, marginBottom: 10, borderWidth: 1, borderRadius: 8, borderColor: "#ccc" },
   title: { fontSize: 18, fontWeight: "bold" },
   image: { width: "100%", height: 200, marginTop: 8, borderRadius: 8 },

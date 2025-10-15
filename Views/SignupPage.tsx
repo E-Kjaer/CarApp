@@ -9,8 +9,10 @@ import { useAuth } from "../Contexts/Authcontext";
 import { useState } from "react";
 import Checkbox from "expo-checkbox";
 import api from "../api";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function SignupScreen({ navigation }: any) {
+    const insets = useSafeAreaInsets();
     const { user, login, logout } = useAuth();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -48,7 +50,7 @@ export default function SignupScreen({ navigation }: any) {
     };
 
     return (
-        <View style={styles.rootbox}>
+        <View style={{justifyContent: "center", marginTop: insets.top}}>
             <View style={styles.outerbox}>
                 <Text>Sign Up</Text>
                 <TextInput
@@ -108,9 +110,6 @@ const styles = StyleSheet.create({
     outerbox: {
         padding: 20,
         margin: 20,
-        justifyContent: "center",
-    },
-    rootbox: {
         justifyContent: "center",
     },
     input: {
