@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ActivityIndicator, FlatList, Image, Pressable } from "react-native";
-import api from "../Backend/api";
+import api from "../api";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import {ExploreStackParamList} from "../ExploreNavTypes";
+import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;

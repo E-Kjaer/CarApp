@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
-import { useAuth } from "../Authcontext"; 
+import { useAuth } from "../Contexts/Authcontext"; 
 
 interface ProfilePageProps {
     image: ImageSourcePropType;

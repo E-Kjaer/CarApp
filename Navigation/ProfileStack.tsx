@@ -1,10 +1,10 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useAuth } from "../Authcontext";
+import { useAuth } from "../Contexts/Authcontext";
 
 import ProfileScreenWrapper from "./ProfileScreenWrapper";
-import LoginScreen from "../Components/LoginPage";
-import SignUpScreen from "../Components/SignupPage";
+import LoginScreen from "../Views/LoginPage";
+import SignUpScreen from "../Views/SignupPage";
 
 export type ProfileStackParamList = {
     Login: undefined;

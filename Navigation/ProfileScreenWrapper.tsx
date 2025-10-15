@@ -1,6 +1,6 @@
 import React from "react";
 import ProfilePage from "../Views/ProfilePage";
-import { useAuth } from "../Authcontext";
+import { useAuth } from "../Contexts/Authcontext";
 
 export default function ProfileScreenWrapper() {
     const { user } = useAuth();

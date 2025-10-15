@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
-import { ExploreStackParamList } from "../ExploreNavTypes";
+import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
 
 type ConfirmationNav = RouteProp<ExploreStackParamList, "Confirmation">;
 

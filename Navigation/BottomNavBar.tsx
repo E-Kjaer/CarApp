@@ -4,10 +4,10 @@ import { NavigationContainer} from "@react-navigation/native";
 import { StyleSheet, Text, View } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CarList from "../Views/CarList";
-import LoginPage from "./LoginPage"
-import ExploreStack from "../ExploreStack";
-import ProfileStack from "../Navigation/ProfileStack";
-import {useAuth} from "../Authcontext";
+import LoginPage from "../Views/LoginPage"
+import ExploreStack from "./ExploreStack";
+import ProfileStack from "./ProfileStack";
+import {useAuth} from "../Contexts/Authcontext";
 
 export type RootTabParamList = {
     Home: undefined;

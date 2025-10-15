@@ -1,9 +1,9 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CarList from "./Views/CarList";
-import DetailedView from "./Components/DetailedView";
-import BookingPage from "./Components/BookingPage";
-import ConfirmationPage from "./Components/ConfirmationPage";
+import CarList from "../Views/CarList";
+import DetailedView from "../Views/DetailedView";
+import BookingPage from "../Views/BookingPage";
+import ConfirmationPage from "../Views/ConfirmationPage";
 import {ExploreStackParamList} from "./ExploreNavTypes";
 
 

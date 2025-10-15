@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
-import api from "../Backend/api";
+import api from "../api";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import {ExploreStackParamList} from "../ExploreNavTypes";
+import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 
 type BookingRoute = RouteProp<ExploreStackParamList, "Booking">;

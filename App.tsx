@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import CarRentalCard from './CarRentalCard'
-import BottomNavBar from './Components/BottomNavBar';
-import {AuthProvider} from "./Authcontext";
+import CarRentalCard from './Components/CarRentalCard'
+import BottomNavBar from './Navigation/BottomNavBar';
+import {AuthProvider} from "./Contexts/Authcontext";
 import {NavigationContainer} from "@react-navigation/native";
 
 export default function App() {
