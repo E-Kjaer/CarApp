@@ -6,9 +6,9 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { AuthProvider, useAuth } from "../Authcontext";
+import { AuthProvider, useAuth } from "../Contexts/Authcontext";
 import { useState } from 'react'
-import api from "../Backend/api";
+import api from "../api";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ProfileStackParamList } from "../Navigation/ProfileStack";

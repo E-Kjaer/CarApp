@@ -5,10 +5,10 @@ import {
     TouchableOpacity,
     Text,
 } from "react-native";
-import { useAuth } from "../Authcontext";
+import { useAuth } from "../Contexts/Authcontext";
 import { useState } from "react";
 import Checkbox from "expo-checkbox";
-import api from "../Backend/api";
+import api from "../api";
 
 export default function SignupScreen({ navigation }: any) {
     const { user, login, logout } = useAuth();

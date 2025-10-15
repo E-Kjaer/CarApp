@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import {View, Text, StyleSheet, ActivityIndicator, FlatList, TextInput, TouchableOpacity,} from "react-native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import api from "../Backend/api";
-import CarRentalCard from "../CarRentalCard";
+import api from "../api";
+import CarRentalCard from "../Components/CarRentalCard";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import FilterBar from "../Components/FilterBar";
-import {ExploreStackParamList} from "../ExploreStack";
+import {ExploreStackParamList} from "../Navigation/ExploreStack";
 import {useNavigation} from "@react-navigation/native";
 
 

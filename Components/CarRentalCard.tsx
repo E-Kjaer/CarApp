@@ -43,7 +43,7 @@ const CarRentalCard = ({ image, brand, model, location, rental_price, onPressRen
                             console.log("Rent Now pressed");
                             onPressRent?.();
                           }}>
-          <Image source={require('./assets/calendar.png')} style={styles.calendarIcon} />
+          <Image source={require('../assets/calendar.png')} style={styles.calendarIcon} />
           <Text style={styles.buttonText}>Rent Now</Text>
         </TouchableOpacity>
       </View>

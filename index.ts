@@ -1,7 +1,7 @@
 import { registerRootComponent } from 'expo';
 
 import App from './App';
-import BottomNavBar from './Components/BottomNavBar';
+import BottomNavBar from './Navigation/BottomNavBar';
 
 // registerRootComponent calls AppRegistry.registerComponent('main', () => App);
 // It also ensures that whether you load the app in Expo Go or in a native build,
