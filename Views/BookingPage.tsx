@@ -1,67 +1,92 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TextInput, Pressable } from "react-native";
-import api from "../api";
-import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
-import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import React, { useState } from "react";
+import { StyleSheet, View, Text, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { ExploreStackParamList } from "../ExploreNavTypes";
+import { Calendar } from "react-native-calendars";
+import api from "../Backend/api";
 
-type BookingRoute = RouteProp<ExploreStackParamList, "Booking">;
+
 type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
 
-const INPUT_WIDTH = 260; 
-
-interface Rent {
-  rent_id: number;
-  renter_id: number;
-  car_id: number;
-  start_date: number;
-  end_date: number;
+// local YYYY-MM-DD 
+function todayISO() {
+  const date = new Date();
+  const timezone = date.getTimezoneOffset() * 60000;
+  const local = new Date(date.getTime() - timezone);
+  return local.toISOString().slice(0, 10);
 }
 
 export default function BookingPage() {
   const navigation = useNavigation<BookingNav>();
-  const { params } = useRoute<BookingRoute>();
+
   const [start_date, setStartDate] = useState("");
   const [end_date, setEndDate] = useState("");
 
+  const today = todayISO();
+
+  const onDayPress = (day: any) => {
+    const picked = day.dateString;
+
+    // Block past dates
+    if (picked < today) return;
+
+    if (!start_date) {
+      setStartDate(picked);
+    } else if (!end_date) {
+      if (picked < start_date) {
+        setStartDate(picked);
+        setEndDate("");
+      } else {
+        setEndDate(picked);
+      }
+    } else {
+      setStartDate(picked);
+      setEndDate("");
+    }
+  };
+
+  const markedDates: Record<string, any> = {};
+  if (start_date) markedDates[start_date] = { selected: true, selectedColor: "blue" };
+  if (end_date) markedDates[end_date] = { selected: true, selectedColor: "green" };
+
   return (
     <View style={styles.screen}>
-      <View style={styles.header}>
+      <View style={styles.content}>
         <Text style={styles.headerTxt}>How long would you like to book the vehicle?</Text>
-        <View style={styles.content}>
-          <Text style={styles.label}>Start Date</Text>
-          <TextInput
-            placeholder="YYYY-MM-DD"
-            style={styles.input}
-            value={start_date}             
-            onChangeText={setStartDate}   
-          />
 
-          <Text style={styles.label}>End Date</Text>
-          <TextInput
-            placeholder="YYYY-MM-DD"
-            style={styles.input}
-            value={end_date}
-            onChangeText={setEndDate}
-          />
+        <Calendar
+          onDayPress={onDayPress}
+          markedDates={markedDates}
+          minDate={today} // <-- prevents selecting past days in the UI
+          disableAllTouchEventsForDisabledDays // extra safety for disabled dates
+        />
 
-          <Pressable
-            style={styles.button}
-            onPress={async () => {
-              try {
-                await api.post('/insertRents', { renter_id: 1, car_id: 1, start_date, end_date });
-                navigation.navigate('Confirmation', { start_date, end_date });
-              } catch (e: any) {
-                console.log('POST error:', e?.response?.data || e?.message);
-              }
-            }}
+        <Text>
+          Start: {start_date || "—"}{"\n"}End: {end_date || "—"}
+        </Text>
 
-          >
-            <Text style={styles.buttonText}>Confirm Dates</Text>
-          </Pressable>
+        <Pressable
+          style={[styles.button, (!start_date || !end_date) && { opacity: 0.5 }]}
+          disabled={!start_date || !end_date}
+          onPress={async () => {
+            try {
+              await api.post("/insertRents", {
+                renter_id: 2, // TODO: replace with actual logged-in user id
+                car_id: 1,    // TODO: replace with the selected car’s id
+                start_date: start_date.split("-").join(""),
+                end_date: end_date.split("-").join(""),
+              });
 
+              navigation.navigate("Confirmation", { start_date, end_date });
+            } catch (err: any) {
+              console.error("Insert rent failed:", err);
+            }
+          }}
+        >
+          <Text style={styles.buttonText}>Confirm Dates</Text>
+      </Pressable>
 
-        </View>
       </View>
     </View>
   );
@@ -69,39 +94,14 @@ export default function BookingPage() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#fff" },
-  header: {
-    alignItems: "center",
-    flex: 1,
-    justifyContent: "center",
-    paddingHorizontal: 16,
-    marginTop: 225,
-  },
-  headerTxt: {
-    fontSize: 15,
-    fontWeight: "bold",
-  },
+  headerTxt: { fontSize: 18, fontWeight: "bold" },
   content: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",   
+    alignItems: "center",
     gap: 12,
     paddingHorizontal: 16,
-  },
-  label: {
-    width: INPUT_WIDTH,
-    textAlign: "left",       
-    fontSize: 14,
-    fontWeight: "600",
-    marginBottom: 1,
-  },
-  input: {
-    width: INPUT_WIDTH,      
-    height: 40,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    paddingHorizontal: 10,
-    backgroundColor: "#fff",
+    marginTop: 325,
   },
   button: {
     alignSelf: "center",
