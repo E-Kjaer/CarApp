@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { ExploreStackParamList } from "../ExploreNavTypes";
+import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
 import { Calendar } from "react-native-calendars";
-import api from "../Backend/api";
+import api from "../api";
 
 
 type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
