@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
 import { Calendar } from "react-native-calendars";
+import { Alert } from "react-native";
 import api from "../api";
 
 
@@ -33,17 +34,25 @@ export default function BookingPage() {
 
     if (!start_date) {
       setStartDate(picked);
-    } else if (!end_date) {
+      return;
+    } 
+
+    if (!end_date) {
+      if (picked == start_date) {
+        Alert.alert("Invalid dates", "End date must be different from the start date.");
+        return;
+      }
       if (picked < start_date) {
         setStartDate(picked);
         setEndDate("");
       } else {
         setEndDate(picked);
       }
-    } else {
-      setStartDate(picked);
-      setEndDate("");
+      return;
     }
+
+    setStartDate(picked);
+    setEndDate("");
   };
 
   const markedDates: Record<string, any> = {};
@@ -58,35 +67,36 @@ export default function BookingPage() {
         <Calendar
           onDayPress={onDayPress}
           markedDates={markedDates}
-          minDate={today} // <-- prevents selecting past days in the UI
-          disableAllTouchEventsForDisabledDays // extra safety for disabled dates
+          // cant select past dates
+          minDate={today} 
+          disableAllTouchEventsForDisabledDays
         />
 
         <Text>
           Start: {start_date || "—"}{"\n"}End: {end_date || "—"}
         </Text>
-
         <Pressable
           style={[styles.button, (!start_date || !end_date) && { opacity: 0.5 }]}
           disabled={!start_date || !end_date}
           onPress={async () => {
             try {
               await api.post("/insertRents", {
-                renter_id: 2, // TODO: replace with actual logged-in user id
-                car_id: 1,    // TODO: replace with the selected car’s id
+                renter_id: 2, 
+                car_id: 1,    
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });
+              navigation.goBack();
 
-              navigation.navigate("Confirmation", { start_date, end_date });
+              Alert.alert("Booking Confirmed", `From ${start_date} to ${end_date}`);
             } catch (err: any) {
-              console.error("Insert rent failed:", err);
+              console.log("Insert rent failed (catch):", err);
+              Alert.alert("Error", "Booking failed.");
             }
           }}
         >
           <Text style={styles.buttonText}>Confirm Dates</Text>
-      </Pressable>
-
+        </Pressable>
       </View>
     </View>
   );
