@@ -5,6 +5,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { AuthProvider, useAuth } from "../Contexts/Authcontext";
 import { useState } from 'react'
@@ -32,6 +33,7 @@ export default function LoginPage() {
             })
             .catch(function (error) {
                 console.log(error);
+                Alert.alert("Invalid credentials", "Email or password does not match")
             });
     }
 
@@ -48,6 +50,7 @@ export default function LoginPage() {
         <TextInput
           placeholder="Password"
           value={password}
+          secureTextEntry
           onChangeText={(newText) => {setPassword(newText)}}
           style={styles.input}
         />
