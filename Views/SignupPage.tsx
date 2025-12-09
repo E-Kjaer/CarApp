@@ -14,7 +14,6 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 export default function SignupScreen({ navigation }: any) {
     const insets = useSafeAreaInsets();
     const { user, login, logout } = useAuth();
-    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [phonenumber, setPhonenumber] = useState("");
@@ -22,7 +21,6 @@ export default function SignupScreen({ navigation }: any) {
     const [is_owner, setIs_Owner] = useState(false);
 
     const signUp = (
-        username: string,
         password: string,
         email: string,
         name: string,
@@ -31,7 +29,6 @@ export default function SignupScreen({ navigation }: any) {
     ) => {
         api
             .post("/insertUser", {
-                username: username,
                 password: password,
                 email: email,
                 name: name,
@@ -53,12 +50,6 @@ export default function SignupScreen({ navigation }: any) {
         <View style={{justifyContent: "center", marginTop: insets.top}}>
             <View style={styles.outerbox}>
                 <Text>Sign Up</Text>
-                <TextInput
-                    placeholder="Username"
-                    value={username}
-                    onChangeText={setUsername}
-                    style={styles.input}
-                />
                 <TextInput
                     placeholder="Email"
                     value={email}
@@ -92,12 +83,12 @@ export default function SignupScreen({ navigation }: any) {
                         color={is_owner ? "#2196F3" : undefined}
                         style={styles.checkbox}
                     />
-                    <Text>Are you an owner?</Text>
+                    <Text>Business Account?</Text>
                 </View>
 
                 <TouchableOpacity
                     style={styles.loginButton}
-                    onPress={() => signUp(username, password, email, name, phonenumber, is_owner)}
+                    onPress={() => signUp(password, email, name, phonenumber, is_owner)}
                 >
                     <Text>Sign Up</Text>
                 </TouchableOpacity>

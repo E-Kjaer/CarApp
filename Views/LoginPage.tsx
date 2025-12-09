@@ -16,12 +16,12 @@ import { ProfileStackParamList } from "../Navigation/ProfileStack";
 export default function LoginPage() {
     const navigation = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
     const {user, login, logout} = useAuth();
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const checkLogin = (username: string, password: string) => {
+    const checkLogin = (email: string, password: string) => {
         api.post('/login', {
-            identifier: username,
+            identifier: email,
             password: password
         })
             .then(res => {
@@ -40,9 +40,9 @@ export default function LoginPage() {
       <View style={styles.outerbox}>
         <Text style={{fontWeight: "bold", marginBottom: 5}}>Login</Text>
         <TextInput
-          placeholder="Username"
-          value={username}
-          onChangeText={(newText) => {setUsername(newText)}}
+          placeholder="E-mail"
+          value={email}
+          onChangeText={(newText) => {setEmail(newText)}}
           style={styles.input}
         />
         <TextInput
@@ -52,7 +52,7 @@ export default function LoginPage() {
           style={styles.input}
         />
           <TouchableOpacity style={styles.loginButton}
-                            onPress={() => {checkLogin(username, password)}}>
+                            onPress={() => {checkLogin(email, password)}}>
               <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.signupButton}

@@ -25,7 +25,6 @@ db.serialize(() => {
   // Laver de forskellige tabeller
   db.run(`CREATE TABLE IF NOT EXISTS user (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     name TEXT NOT NULL,
     phonenumber TEXT NOT NULL,
@@ -61,12 +60,12 @@ db.serialize(() => {
   )`);
 
  // Indsætter dummy data ind til alle tabellerne
-  db.run(`INSERT INTO user (username, email, name, phonenumber, password, is_owner, rating) VALUES
-  ('alicej', 'alice@example.com', 'Alice Johnson', '+14155550111', 'pass123', 1, 4.9),
-  ('bobm', 'bob@example.com', 'Bob Martinez', '+14155550222', 'pass456', 0, 4.2),
-  ('charlies', 'charlie@example.com', 'Charlie Smith', '+14155550333', 'pass789', 0, 3.8),
-  ('dianap', 'diana@example.com', 'Diana Prince', '+14155550444', 'pass321', 1, 4.7),
-  ('ethanh', 'ethan@example.com', 'Ethan Hunt', '+14155550555', 'pass654', 0, 4.5)
+  db.run(`INSERT INTO user (email, name, phonenumber, password, is_owner, rating) VALUES
+  ('alice@example.com', 'Alice Johnson', '+14155550111', 'pass123', 1, 4.9),
+  ('bob@example.com', 'Bob Martinez', '+14155550222', 'pass456', 0, 4.2),
+  ('charlie@example.com', 'Charlie Smith', '+14155550333', 'pass789', 0, 3.8),
+  ('diana@example.com', 'Diana Prince', '+14155550444', 'pass321', 1, 4.7),
+  ('ethan@example.com', 'Ethan Hunt', '+14155550555', 'pass654', 0, 4.5)
 `);
 
 
@@ -246,7 +245,7 @@ app.get('/filterCars', (req, res) => {
 app.post('/login', (req, res) => {
   const { identifier , password} = req.body;
 
-  db.get('SELECT * FROM user WHERE email = ? OR username = ?', [identifier, identifier], async (err, user) => {
+  db.get('SELECT * FROM user WHERE email = ?', [identifier], async (err, user) => {
     if(err) return res.status(500).json({error: err.message});
     if(!user) return res.status(401).json({error: "User not found"});
 
@@ -260,12 +259,12 @@ app.post('/login', (req, res) => {
 //endpoints for at indsætte data i tabeller
 app.post('/insertUser', async (req, res) => {
   try {
-    const { username, email, name, phonenumber, password, is_owner, rating } = req.body;
+    const { email, name, phonenumber, password, is_owner, rating } = req.body;
     const hashedPassword = await bcrypt.hash(password, 5);
 
     db.run(
-      'INSERT INTO user (username, email, name, phonenumber, password, is_owner, rating) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [username, email, name, phonenumber, hashedPassword, is_owner, rating],
+      'INSERT INTO user (email, name, phonenumber, password, is_owner, rating) VALUES (?, ?, ?, ?, ?, ?)',
+      [email, name, phonenumber, hashedPassword, is_owner, rating],
       function (err) {
         if (err) return res.status(500).json({ error: err.message });
 
