@@ -62,7 +62,7 @@ export default function CarList() {
 
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   return (
-    <View style={{ flex: 1, marginTop: insets.top + 20, paddingLeft: 16, paddingRight: 16, backgroundColor: "#fff" }}>
+    <View style={{ flex: 1, marginTop: insets.top + 20, paddingLeft: 16, paddingRight: 16 }}>
       <View style={styles.searchBar}>
         <TextInput
             placeholderTextColor={"#999999"}
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#ECE7F0",
+    backgroundColor: "#ffffffff",
     paddingHorizontal: 8,
   },
   searchInput: {
