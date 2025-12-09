@@ -43,7 +43,7 @@ export default function CarList() {
         fuel_type: active.includes("electric") ? "Electric" : undefined,
         seats:  active.includes("seats6") ? 6 : undefined,
         maxPrice:  active.includes("budget") ? 250 : undefined,
-        brand:  active.includes("luxury") ? "BMW" : undefined,
+        minPrice: active.includes("luxury") ? 600 : undefined, 
         location:  query || undefined,
       },
     })

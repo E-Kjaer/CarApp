@@ -74,7 +74,8 @@ db.serialize(() => {
     ('Toyota', 'Camry', 'Reliable and fuel-efficient sedan.', 240, 'Gasoline', 600, 5, 'Oakland, CA', 'Toyota_Camry.png', 4),
     ('BMW', 'X5', 'Luxury SUV with spacious interior.', 600, 'Hybrid', 650, 5, 'Palo Alto, CA', 'Bmv_X5.png', 1),
     ('Honda', 'Civic', 'Compact and efficient car.', 220, 'Gasoline', 500, 5, 'Berkeley, CA', 'Honda_Civic.png', 4),
-    ('Ford', 'Mustang', 'Sporty car with great performance.', 550, 'Gasoline', 400, 4, 'San Jose, CA', 'Ford_Mustang.png', 1)
+    ('Ford', 'Mustang', 'Sporty car with great performance.', 550, 'Gasoline', 400, 4, 'San Jose, CA', 'Ford_Mustang.png', 1),
+    ('Lincoln', 'MKT', 'Luxury limousine.', 800, 'Gasoline', 400, 10, 'Los Angeles, CA', 'Lincoln_MKT_Luxury.png', 1)
 `);
 
 
@@ -215,7 +216,7 @@ app.get('/filterCars', (req, res) => {
   }
 
   if(seats) {
-    categories.push("seats = ?");
+    categories.push("seats >= ?");
     values.push(seats);
   }
 
