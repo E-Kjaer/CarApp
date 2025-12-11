@@ -107,10 +107,6 @@ export default function BookingPage() {
               navigation.goBack()
               navigation.goBack()
               navigation.navigate("Bookings", { screen: "BookingList" });
-              Alert.alert(
-                "Booking Confirmed",
-                `From ${start_date} to ${end_date}`,
-              );
             } catch (err: any) {
               console.log("Insert rent failed (catch):", err);
               Alert.alert("Error", "Booking failed.");

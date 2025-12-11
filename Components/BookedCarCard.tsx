@@ -2,6 +2,8 @@ import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import type { ImageSourcePropType } from "react-native";
 
+const formatDate = (s: string) => `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+
 interface CarProps {
   image: ImageSourcePropType;
   brand: string;
@@ -36,9 +38,9 @@ const BookedCarCard = ({
             <Text>{location}</Text>
           </View>
 
-          <View style={styles.priceWrap}>
-            <Text style={styles.priceNumber}>{rental_price}</Text>
-            <Text style={styles.priceMeta}> DKK/day</Text>
+          <View>
+            <Text>Start: {formatDate(start_date)}</Text>
+            <Text>End: {formatDate(end_date)}</Text>
           </View>
         </View>
       </View>
@@ -95,22 +97,5 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: "#6ea4b3",
-  },
-
-  priceWrap: {
-    //flexDirection: 'row',
-    marginLeft: "auto",
-    alignItems: "flex-end",
-  },
-
-  priceNumber: {
-    fontSize: 22,
-    fontWeight: "800",
-    lineHeight: 26,
-  },
-
-  priceMeta: {
-    fontSize: 14,
-    marginTop: 2,
   },
 });
