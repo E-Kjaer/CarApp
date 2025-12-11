@@ -1,15 +1,15 @@
-import { useEffect, useState } from "react";
+import React from "react";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer} from "@react-navigation/native";
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Ionicons from "@expo/vector-icons/Ionicons";
+import CarList from "../Views/CarList";
+import LoginPage from "../Views/LoginPage"
 import ExploreStack from "./ExploreStack";
 import ProfileStack from "./ProfileStack";
 import {useAuth} from "../Contexts/Authcontext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MyBookingsStack from "./MyBookings";
-
-
 
 export type RootTabParamList = {
     Home: undefined;
@@ -25,13 +25,6 @@ function MyCarsScreen() {
         <Text>My Cars</Text>
       </View>
     );
-  }
-  function BookingScreen() {
-      return (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-              <Text>My Bookings</Text>
-          </View>
-      );
   }
 
 export default function BottomNavBar() {
@@ -85,7 +78,7 @@ export default function BottomNavBar() {
               <Tab.Screen name="Bookings" component={MyBookingsStack} />
             )}
             {isOwner && (
-                <Tab.Screen name="MyCars" component={MyCarsView} />
+                <Tab.Screen name="MyCars" component={MyCarsScreen} />
             )}
           <Tab.Screen name = "Profile" component={ProfileStack} />
         </Tab.Navigator>
