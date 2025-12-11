@@ -1,6 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { BookingList } from "../Views/MyBookingsView"
+import BookingList from "../Views/MyBookingsView"
 
 
 export type BookingListParamList = {

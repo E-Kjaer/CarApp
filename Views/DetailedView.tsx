@@ -9,17 +9,16 @@ import {
   Pressable,
 } from "react-native";
 import api from "../api";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import { Ionicons } from "@expo/vector-icons";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {useAuth} from "../Contexts/Authcontext";
 import {ProfileStackParamList} from "../Navigation/ProfileStack";
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
-type ProfileNav = NativeStackNavigationProp<ProfileStackParamList>
+type ProfileNav = NativeStackNavigationProp<ProfileStackParamList, "Login">
 
 interface Car {
   car_id: number;
