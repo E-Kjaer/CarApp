@@ -89,7 +89,7 @@ export default function DetailedView() {
         <View style={styles.tags_container}>
           <View style={styles.tag}>
             <Ionicons
-              name={"battery-charging-outline"}
+              name={car.fuel_type === "Gasoline" ? "water-outline" : "battery-charging-outline"}
               size={18}
               style={{ marginRight: 6 }}
               color="#6351a9"
