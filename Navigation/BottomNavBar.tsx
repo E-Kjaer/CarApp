@@ -7,7 +7,7 @@ import ExploreStack from "./ExploreStack";
 import ProfileStack from "./ProfileStack";
 import {useAuth} from "../Contexts/Authcontext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import MyCarsView from "../Views/MyCarsView";
+import MyBookingsStack from "./MyBookings";
 
 
 
@@ -18,6 +18,14 @@ export type RootTabParamList = {
 
 const Tab = createBottomTabNavigator();
 
+// Dummy Settings-skærm
+function MyCarsScreen() {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text>My Cars</Text>
+      </View>
+    );
+  }
   function BookingScreen() {
       return (
           <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -73,7 +81,8 @@ export default function BottomNavBar() {
           })}
         >
           <Tab.Screen name="Explore" component={ExploreStack}/>
-            {user && (<Tab.Screen name="Bookings" component={BookingScreen} />
+            {user && (
+              <Tab.Screen name="Bookings" component={MyBookingsStack} />
             )}
             {isOwner && (
                 <Tab.Screen name="MyCars" component={MyCarsView} />

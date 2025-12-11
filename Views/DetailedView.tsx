@@ -9,14 +9,16 @@ import {
   Pressable,
 } from "react-native";
 import api from "../api";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import { Ionicons } from "@expo/vector-icons";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
+import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
+import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {useAuth} from "../Contexts/Authcontext";
+import {ProfileStackParamList} from "../Navigation/ProfileStack";
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
+type ProfileNav = NativeStackNavigationProp<ProfileStackParamList, "Login">
 
 interface Car {
   car_id: number;
@@ -44,7 +46,9 @@ interface Owner {
 
 export default function DetailedView() {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const { user } = useAuth();
+  const navigation = useNavigation()
+  const login = useNavigation<ProfileNav>();
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car>();
   const [owner, setOwner] = useState<Owner>();
@@ -160,7 +164,8 @@ export default function DetailedView() {
             <Text>{owner.phonenumber}</Text>
           </View>
         </View>
-        <View style={styles.buttom_bar}>
+        {user && (
+          <View style={styles.buttom_bar}>
           <Pressable
             style={styles.rent_now_button}
             onPress={() => {
@@ -178,6 +183,28 @@ export default function DetailedView() {
             </Text>
           </Pressable>
         </View>
+        )}
+        {!user && (
+          <View style={styles.buttom_bar}>
+          <Pressable
+            style={styles.rent_now_button}
+            onPress={() => {
+              login.navigate("Profile");
+            }}
+          >
+            <Ionicons
+              name={"person-outline"}
+              size={20}
+              color={"white"}
+            ></Ionicons>
+            <Text style={styles.rent_now_button_text}>
+              Sign In
+            </Text>
+          </Pressable>
+        </View>
+        )}
+      
+        
       </View>
     );
 }
