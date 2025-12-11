@@ -123,13 +123,10 @@ export default function DetailedView() {
         </View>
       </View>
       <View style={styles.buttom_bar}>
-        {/* <View style={styles.price_container}>
-          <Text>{car.price} DKK/day</Text>
-        </View> */}
         <Pressable style={styles.rent_now_button} onPress={() => {
           navigation.navigate("Booking");
         }}>
-          <Ionicons name={"calendar-outline"} size={18} color={"white"}></Ionicons>
+          <Ionicons name={"calendar-outline"} size={28} color={"white"}></Ionicons>
           <Text style={styles.rent_now_button_text}> {car.price} DKK/day</Text>
         </Pressable>
       </View>
@@ -191,9 +188,10 @@ const styles = StyleSheet.create({
   },
   rent_now_button: {
     flexDirection: "row",
+    alignItems: "center",
     padding: 12, 
-    marginBottom: 10, 
-    height: 45,
+    marginBottom: 0, 
+    height: 55,
     borderWidth: 0,
     borderRadius: 8, 
     backgroundColor: "#6351a9",
@@ -204,6 +202,8 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   rent_now_button_text: {
+    fontWeight: "bold",
+    fontSize: 20,
     marginLeft: 3,
     color: "#fff",
   },
