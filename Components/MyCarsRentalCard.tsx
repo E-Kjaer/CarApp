@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import type { ImageSourcePropType } from 'react-native';
 
 interface CarProps {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#fff',
     borderRadius: 24,
-    padding: 16,
+    padding: 30,
     gap: 16,
     flex: 1,
     //width: 500,
@@ -67,14 +67,14 @@ const styles = StyleSheet.create({
   },
 
   brand: {
-    fontSize: 28,
+    fontSize: 22,
     fontWeight: '800',
     letterSpacing: 0.3,
   },
 
   model: {
     marginTop: 4,
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '700',
     color: '#6ea4b3',
   },
