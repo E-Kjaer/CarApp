@@ -3,7 +3,7 @@ import api from "../api";
 import { useAuth } from "../Contexts/Authcontext";
 import { View, Text, StyleSheet, ActivityIndicator, FlatList, TextInput, TouchableOpacity } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CarRentalCard from "../Components/CarRentalCard";
+import BookedCarCard from "../Components/BookedCarCard";
 
 
 interface Car {
@@ -25,12 +25,11 @@ export default function BookingList() {
     const insets = useSafeAreaInsets();
     const [loading, setLoading] = useState(true);
     const [cars, setCars] = useState<Car[]>([]);
+    const {user} = useAuth();
 
     const fetchCars = () => {
-        api.get<Car[]>("/getRentsByRenter/:id", {
-            params: {
-                id: 5
-            },
+        api.get<Car[]>(`/users/${user?.user_id}/rents`, {
+         
         })
         .then((res) => setCars(res.data))
         .catch((err) => console.warn("API error:", err))
@@ -50,7 +49,7 @@ export default function BookingList() {
             data = {cars}
             keyExtractor={(item) => item.car_id.toFixed.toString()}
             renderItem={({ item }) => (
-                <CarRentalCard
+                <BookedCarCard
                     image={{uri: `http://localhost:3000/${item.image}`}}
                     rental_price = {item.price}
                     model = {item.model}
@@ -62,8 +61,3 @@ export default function BookingList() {
     </View>
   )
 }
-
-
-const styles = StyleSheet.create({
-    card: { padding: 12, marginBottom: 10, borderWidth: 1, borderRadius: 8, borderColor: "#ccc"}
-});
