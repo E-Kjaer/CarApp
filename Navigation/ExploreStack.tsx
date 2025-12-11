@@ -26,7 +26,7 @@ export default function ExploreStack() {
             <Stack.Screen
                 name="Detailed"
                 component={DetailedView}
-               // options={{ title: "Detaljer" }}
+               // options={{ title: "Details" }}
             />
             <Stack.Screen
                 name="Booking"

@@ -3,11 +3,14 @@ import { StyleSheet, View, Text, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
+import { BookingListParamList } from "../Navigation/MyBookings";
 import { Calendar } from "react-native-calendars";
 import { Alert } from "react-native";
 import api from "../api";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
+type MyBookingNav = NativeStackNavigationProp<BookingListParamList, "BookingList">
 
 // local YYYY-MM-DD
 function todayISO() {
@@ -19,6 +22,7 @@ function todayISO() {
 
 export default function BookingPage() {
   const navigation = useNavigation<BookingNav>();
+  const myBooking = useNavigation<MyBookingNav>();
 
   const [start_date, setStartDate] = useState("");
   const [end_date, setEndDate] = useState("");
@@ -96,7 +100,8 @@ export default function BookingPage() {
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });
-              navigation.goBack();
+              const nav = useNavigation();
+              myBooking.navigate("BookingList")
 
               Alert.alert(
                 "Booking Confirmed",

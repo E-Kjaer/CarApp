@@ -15,8 +15,11 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Ionicons } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import {useAuth} from "../Contexts/Authcontext";
+import {ProfileStackParamList} from "../Navigation/ProfileStack";
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
+type ProfileNav = NativeStackNavigationProp<ProfileStackParamList, "Login">
 
 interface Car {
   car_id: number;
@@ -44,7 +47,9 @@ interface Owner {
 
 export default function DetailedView() {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
+  const { user } = useAuth();
+  const navigation = useNavigation()
+  const login = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car>();
   const [owner, setOwner] = useState<Owner>();
