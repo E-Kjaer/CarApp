@@ -5,6 +5,8 @@ import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
 import {Ionicons} from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
@@ -35,6 +37,7 @@ interface Owner {
 }
 
 export default function DetailedView() {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation()
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car>();
@@ -61,12 +64,15 @@ export default function DetailedView() {
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
   if (car && owner)
     return (
-    <View style={styles.container}>
+    <View style={{
+      marginTop: insets.top + 20,
+      flex: 1, 
+      padding: 0}}>
       <Image source={{uri: `http://localhost:3000/${car.image}`}}
         style={styles.image}
       />
       <View style={styles.brand_container}>
-        <Text style={styles.title}>{car.brand} {car.model}</Text>
+        <Text style={styles.car_title}>{car.brand} {car.model}</Text>
         <Text style={styles.sub_title}>{car.year}</Text>
       </View>
       <View style={styles.tags_container}>
@@ -117,14 +123,14 @@ export default function DetailedView() {
         </View>
       </View>
       <View style={styles.buttom_bar}>
-        <View style={styles.price_container}>
+        {/* <View style={styles.price_container}>
           <Text>{car.price} DKK/day</Text>
-        </View>
+        </View> */}
         <Pressable style={styles.rent_now_button} onPress={() => {
           navigation.navigate("Booking");
         }}>
           <Ionicons name={"calendar-outline"} size={18} color={"white"}></Ionicons>
-          <Text style={styles.rent_now_button_text}>Rent Now</Text>
+          <Text style={styles.rent_now_button_text}> {car.price} DKK/day</Text>
         </Pressable>
       </View>
       </View>
@@ -132,23 +138,22 @@ export default function DetailedView() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 0, backgroundColor: "#F2EDF6"},
   brand_container: { 
     flex: 1 , 
     flexDirection: "row", 
     justifyContent: "space-between",
     maxHeight: 45, 
-    padding: 12, 
-    marginBottom: 10,
+    padding: 0, 
+    marginTop: 10,
     marginLeft: 16,
     marginRight: 16, 
     borderWidth: 0,
     borderRadius: 8, 
-    backgroundColor: "#FFFFFF"
+    //backgroundColor: "#FFFFFF"
   },
   information_container: {
     flex: 1 , 
-    flexDirection: "column", 
+    flexDirection: "column",
     padding: 12, 
     marginBottom: 10, 
     marginLeft: 16,
@@ -156,15 +161,33 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     backgroundColor: "#FFFFFF"
   },
-  title: { fontSize: 18, fontWeight: "bold" },
+  car_title: { 
+    fontSize: 25, 
+    fontWeight: "bold", 
+    //color: "#6351a9"
+  },
+
+  title: { 
+    fontSize: 18, 
+    fontWeight: "bold"},
   sub_title: { fontSize:18 },
+  price: {
+    color: "#6351a9",
+    fontWeight: "bold"
+  },
   price_container: {
-    padding: 12, 
-    marginBottom: 10, 
-    height: 45,
-    borderWidth: 0,
-    borderRadius: 8, 
-    backgroundColor: "#FFFFFF"
+    flex: 1, 
+    flexDirection: "row", 
+    justifyContent: "center",
+    alignItems: "center",
+    maxHeight: 45,
+    padding: 6,
+    maxWidth: 130, 
+    borderWidth: 1, 
+    borderRadius: 24, 
+    borderColor: "#6351a9",
+    backgroundColor: "#FFFFFF",
+    marginRight: 6,
   },
   rent_now_button: {
     flexDirection: "row",
@@ -174,6 +197,11 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderRadius: 8, 
     backgroundColor: "#6351a9",
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   rent_now_button_text: {
     marginLeft: 3,
@@ -187,13 +215,14 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingTop: 16,
     paddingRight: 16,
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   tags_container: {
     flex: 1, 
     flexDirection: "row", 
-    justifyContent: "space-between",
-    maxHeight: 45, 
+    justifyContent: "flex-start",
+    padding: 0,
+    maxHeight: 38, 
     marginBottom: 10,
     marginLeft: 16,
     marginRight: 16, 
@@ -203,15 +232,18 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     justifyContent: "center",
     alignItems: "center",
-    maxHeight: 35,
-    padding: 12,
+    maxHeight: 45,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1,
     maxWidth: 100, 
-    borderWidth: 1, 
-    borderRadius: 24, 
     borderColor: "#6351a9",
     backgroundColor: "#FFFFFF",
+    marginRight: 6
   },
   tag_text: {
+    fontSize: 14,
     color: "#6351a9",
   
   },
@@ -232,5 +264,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center"
   },
-  image: { width: "100%", height: 200, marginTop: 8, borderRadius: 8 },
+  image: { width: "100%", 
+    height: 200, 
+    marginTop: 8, 
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF"
+   },
 });
