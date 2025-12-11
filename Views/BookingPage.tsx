@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, Pressable } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, RouteProp, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { ExploreStackParamList } from "../Navigation/ExploreNavTypes";
 import { BookingListParamList } from "../Navigation/MyBookings";
@@ -10,6 +10,7 @@ import api from "../api";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { useAuth } from "../Contexts/Authcontext";
 
+type BookingRoute = RouteProp<ExploreStackParamList, "Booking">;
 type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
 type MyBookingNav = NativeStackNavigationProp<BookingListParamList, "BookingList">
 
@@ -25,6 +26,7 @@ export default function BookingPage() {
   const navigation = useNavigation<BookingNav>();
   const myBooking = useNavigation<MyBookingNav>();
 
+  const { params } = useRoute<BookingRoute>();
   const { user } = useAuth();
   const [start_date, setStartDate] = useState("");
   const [end_date, setEndDate] = useState("");
@@ -98,7 +100,7 @@ export default function BookingPage() {
             try {
               await api.post("/rents", {
                 renter_id: user?.user_id,
-                car_id: 2,
+                car_id: params.car_id,
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });
