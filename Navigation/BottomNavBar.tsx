@@ -9,6 +9,7 @@ import ExploreStack from "./ExploreStack";
 import ProfileStack from "./ProfileStack";
 import {useAuth} from "../Contexts/Authcontext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import MyBookingsStack from "./MyBookings";
 
 export type RootTabParamList = {
     Home: undefined;
@@ -24,13 +25,6 @@ function MyCarsScreen() {
         <Text>My Cars</Text>
       </View>
     );
-  }
-  function BookingScreen() {
-      return (
-          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-              <Text>My Bookings</Text>
-          </View>
-      );
   }
 
 export default function BottomNavBar() {
@@ -80,7 +74,8 @@ export default function BottomNavBar() {
           })}
         >
           <Tab.Screen name="Explore" component={ExploreStack}/>
-            {user && (<Tab.Screen name="Bookings" component={BookingScreen} />
+            {user && (
+              <Tab.Screen name="Bookings" component={MyBookingsStack} />
             )}
             {isOwner && (
                 <Tab.Screen name="MyCars" component={MyCarsScreen} />

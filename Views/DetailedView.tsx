@@ -4,9 +4,11 @@ import api from "../api";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
-
+import {useAuth} from "../Contexts/Authcontext";
+import {ProfileStackParamList} from "../Navigation/ProfileStack";
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
+type ProfileNav = NativeStackNavigationProp<ProfileStackParamList, "Login">
 
 
 interface Car {
@@ -34,7 +36,9 @@ interface Owner {
 }
 
 export default function DetailedView() {
+  const { user } = useAuth();
   const navigation = useNavigation()
+  const login = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car | null>(null);
   const [owner, setOwner] = useState<Owner | null>(null);
@@ -90,16 +94,27 @@ export default function DetailedView() {
         {owner != null && <Text>{`Rating:  ${owner.rating}`}</Text>}
 
       </View>
-      <View style={styles.buttom_bar}>
-        <View style={styles.price_container}>
-          {car != null && <Text>Price: {car.price} DKK/day</Text>}
+      {user && (
+        <View style={styles.buttom_bar}>
+          <View style={styles.price_container}>
+          </View>
+          <Pressable style={styles.rent_now_button} onPress={() => {
+            navigation.navigate("Booking")
+          }}>
+            <Text style={styles.rent_now_button_text}>Rent Now</Text>
+          </Pressable>
         </View>
-        <Pressable style={styles.rent_now_button} onPress={() => {
-          navigation.navigate("Booking");
-        }}>
-          <Text style={styles.rent_now_button_text}>Rent Now</Text>
-        </Pressable>
-      </View>
+      )}
+      {!user && (<View style={styles.buttom_bar}>
+          <View style={styles.price_container}>
+          </View>
+          <Pressable style={styles.rent_now_button} onPress={() => {
+            login.navigate("Login")
+          }}>
+            <Text style={styles.rent_now_button_text}>Login</Text>
+          </Pressable>
+        </View>)}
+      
     </View>
   );
 }
