@@ -8,6 +8,7 @@ import { Calendar } from "react-native-calendars";
 import { Alert } from "react-native";
 import api from "../api";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useAuth } from "../Contexts/Authcontext";
 
 type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
 type MyBookingNav = NativeStackNavigationProp<BookingListParamList, "BookingList">
@@ -24,6 +25,7 @@ export default function BookingPage() {
   const navigation = useNavigation<BookingNav>();
   const myBooking = useNavigation<MyBookingNav>();
 
+  const { user } = useAuth();
   const [start_date, setStartDate] = useState("");
   const [end_date, setEndDate] = useState("");
 
@@ -95,8 +97,8 @@ export default function BookingPage() {
           onPress={async () => {
             try {
               await api.post("/rents", {
-                renter_id: 2,
-                car_id: 1,
+                renter_id: user?.user_id,
+                car_id: 2,
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });

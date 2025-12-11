@@ -49,8 +49,8 @@ db.serialize(() => {
    rent_id INTEGER PRIMARY KEY AUTOINCREMENT,
    renter_id INTEGER,
    car_id INTEGER,
-   start_date INTEGER NOT NULL,
-   end_date INTEGER NOT NULL,
+   start_date TEXT NOT NULL,
+   end_date TEXT NOT NULL,
    FOREIGN KEY (renter_id) REFERENCES users(user_id),
    FOREIGN KEY (car_id) REFERENCES cars(car_id)
 
@@ -153,11 +153,15 @@ app.get("/users/:id/cars", (req, res) => {
 
 app.get("/users/:id/rents", (req, res) => {
   const { id } = req.params;
-  db.all("SELECT cars.* FROM rents JOIN cars on rents.car_id = cars.car_id WHERE renter_id = ?", [id], (err, rows) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (!rows) return res.status(404).json({ error: "rents not found" });
-    res.json(rows);
-  });
+  db.all(
+    "SELECT cars.*, start_date, end_date FROM rents JOIN cars on rents.car_id = cars.car_id WHERE renter_id = ?",
+    [id],
+    (err, rows) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (!rows) return res.status(404).json({ error: "rents not found" });
+      res.json(rows);
+    },
+  );
 });
 
 app.get("/filterCars", (req, res) => {
@@ -233,7 +237,7 @@ app.post("/login", (req, res) => {
 
   db.get(
     "SELECT * FROM users WHERE email = ?",
-    [identifier],
+    [identifier.toLowerCase()],
     async (err, user) => {
       if (err) return res.status(500).json({ error: err.message });
       if (!user)
