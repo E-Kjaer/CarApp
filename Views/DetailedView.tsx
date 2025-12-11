@@ -72,7 +72,6 @@ export default function DetailedView() {
     return (
       <View
         style={{
-          marginTop: insets.top,
           flex: 1,
           padding: 0,
         }}
@@ -315,9 +314,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: 200,
-    marginTop: 8,
-    borderRadius: 8,
+    height: 250,
+    alignContent: "flex-end",
     backgroundColor: "#FFFFFF",
   },
 });
