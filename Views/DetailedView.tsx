@@ -65,7 +65,7 @@ export default function DetailedView() {
   if (car && owner)
     return (
     <View style={{
-      marginTop: insets.top + 20,
+      marginTop: insets.top,
       flex: 1, 
       padding: 0}}>
       <Image source={{uri: `http://localhost:3000/${car.image}`}}
