@@ -154,7 +154,7 @@ app.get("/users/:id/cars", (req, res) => {
 app.get("/users/:id/rents", (req, res) => {
   const { id } = req.params;
   db.all(
-    "SELECT cars.*, start_date, end_date FROM rents JOIN cars on rents.car_id = cars.car_id WHERE renter_id = ?",
+    "SELECT cars.*, rent_id, start_date, end_date FROM rents JOIN cars on rents.car_id = cars.car_id WHERE renter_id = ?",
     [id],
     (err, rows) => {
       if (err) return res.status(500).json({ error: err.message });

@@ -15,6 +15,7 @@ import BookedCarCard from "../Components/BookedCarCard";
 import { useIsFocused } from "@react-navigation/native";
 
 interface Booking {
+  rent_id: number;
   car_id: number;
   brand: string;
   model: string;
@@ -71,7 +72,7 @@ export default function BookingList() {
     >
       <FlatList
         data={bookings}
-        keyExtractor={(item) => item.car_id.toFixed.toString()}
+        keyExtractor={(item) => item.rent_id.toString()}
         renderItem={({ item }) => (
           <BookedCarCard
             image={{ uri: `http://localhost:3000/${item.image}` }}
