@@ -4,6 +4,9 @@ import api from "../api";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExploreStackParamList} from "../Navigation/ExploreNavTypes";
 import {NativeStackNavigationProp} from "@react-navigation/native-stack";
+import {Ionicons} from "@expo/vector-icons";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
@@ -34,10 +37,11 @@ interface Owner {
 }
 
 export default function DetailedView() {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation()
   const { params } = useRoute<DetailedRoute>();
-  const [car, setCar] = useState<Car | null>(null);
-  const [owner, setOwner] = useState<Owner | null>(null);
+  const [car, setCar] = useState<Car>();
+  const [owner, setOwner] = useState<Owner>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -58,101 +62,149 @@ export default function DetailedView() {
 
   console.log(owner?.user_id);
   if (loading) return <ActivityIndicator style={{ flex: 1 }} size="large" />;
-  return (
-    <View style={styles.container}>
-      {car != null && <Image source={{uri: `http://localhost:3000/${car.image}`}}
+  if (car && owner)
+    return (
+    <View style={{
+      marginTop: insets.top,
+      flex: 1, 
+      padding: 0}}>
+      <Image source={{uri: `http://localhost:3000/${car.image}`}}
         style={styles.image}
-      />}
+      />
       <View style={styles.brand_container}>
-        {car != null && <Text style={styles.title}>{car.brand} {car.model}</Text>}
-        {car != null && <Text style={styles.sub_title}>{car.year}</Text>}
+        <Text style={styles.car_title}>{car.brand} {car.model}</Text>
+        <Text style={styles.sub_title}>{car.year}</Text>
       </View>
       <View style={styles.tags_container}>
         <View style={styles.tag}>
-          {car != null && <Text style={styles.tag_text}>{car.fuel_type}</Text>}
+          <Ionicons name={"battery-charging-outline"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+          <Text style={styles.tag_text}>{car.fuel_type}</Text>
         </View>
         <View style={styles.tag}>
-          {car != null && <Text style={styles.tag_text}>{car.range} km</Text>}
+          <Ionicons name={"analytics-outline"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+          <Text style={styles.tag_text}>{car.range} km</Text>
         </View>
         <View style={styles.tag}>
-          {car != null && <Text style={styles.tag_text}>{car.seats} seats</Text>}
+          <Ionicons name={"people-outline"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+          <Text style={styles.tag_text}>{car.seats} seats</Text>
         </View>
       </View>
       <View style={styles.information_container}>
         <Text style={styles.title}>Vehicle Information</Text>
-        {car != null && <Text>{car.description}</Text>}
+        <Text>{car.description}</Text>
       </View>
       <View style={styles.information_container}>
-        <Text style={styles.title}>Info about owner</Text>
-        {owner != null && <Text>{`Name:  ${owner.name}`}</Text>}
-        {owner != null && <Text>{`Email:  ${owner.email}`}</Text>}
-        {owner != null && <Text>{`Phone number:  ${owner.phonenumber}`}</Text>}
-        {owner != null && <Text>{`Rating:  ${owner.rating}`}</Text>}
+        <View style={styles.header_owner}>
+          <View style={styles.info}>
+            <Ionicons name={"person"} size={32}
+                      style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+            <Text style={styles.title}>{owner.name}</Text>
+          </View>
+        <View style={styles.rating}>
+          <Ionicons name={"star"} size={32}
+                    style={{ marginRight: 6 }}  color="#6351a9">
+          </Ionicons>
+          <Text style={styles.title}>{owner.rating}/5</Text>
+        </View>
+        </View>
 
+        <View style={styles.info}>
+          <Ionicons name={"mail"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+          <Text>{owner.email}</Text>
+        </View>
+        <View style={styles.info}>
+          <Ionicons name={"call"} size={18}
+                    style={{ marginRight: 6 }} color="#6351a9"></Ionicons>
+          <Text>{owner.phonenumber}</Text>
+        </View>
       </View>
       <View style={styles.buttom_bar}>
-        <View style={styles.price_container}>
-          {car != null && <Text>Price: {car.price} DKK/day</Text>}
-        </View>
         <Pressable style={styles.rent_now_button} onPress={() => {
           navigation.navigate("Booking");
         }}>
-          <Text style={styles.rent_now_button_text}>Rent Now</Text>
+          <Ionicons name={"calendar-outline"} size={28} color={"white"}></Ionicons>
+          <Text style={styles.rent_now_button_text}> {car.price} DKK/day</Text>
         </Pressable>
       </View>
-    </View>
+      </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 0, backgroundColor: "#F2EDF6"},
   brand_container: { 
     flex: 1 , 
     flexDirection: "row", 
     justifyContent: "space-between",
     maxHeight: 45, 
-    padding: 12, 
-    marginBottom: 10,
+    padding: 0, 
+    marginTop: 10,
     marginLeft: 16,
     marginRight: 16, 
-    borderWidth: 1, 
+    borderWidth: 0,
     borderRadius: 8, 
-    borderColor: "#ccc",
-    backgroundColor: "#FFFFFF" 
+    //backgroundColor: "#FFFFFF"
   },
   information_container: {
     flex: 1 , 
-    flexDirection: "column", 
+    flexDirection: "column",
     padding: 12, 
     marginBottom: 10, 
     marginLeft: 16,
     marginRight: 16, 
-    borderWidth: 1, 
-    borderRadius: 8, 
-    borderColor: "#ccc",
-    backgroundColor: "#FFFFFF" 
-  },
-  title: { fontSize: 18, fontWeight: "bold" },
-  sub_title: { fontSize:18 },
-  price_container: {
-    padding: 12, 
-    marginBottom: 10, 
-    height: 45,
-    borderWidth: 1, 
-    borderRadius: 8, 
-    borderColor: "#ccc", 
+    borderRadius: 8,
     backgroundColor: "#FFFFFF"
   },
-  rent_now_button: {
-    padding: 12, 
-    marginBottom: 10, 
-    height: 45,
+  car_title: { 
+    fontSize: 25, 
+    fontWeight: "bold", 
+    //color: "#6351a9"
+  },
+
+  title: { 
+    fontSize: 18, 
+    fontWeight: "bold"},
+  sub_title: { fontSize:18 },
+  price: {
+    color: "#6351a9",
+    fontWeight: "bold"
+  },
+  price_container: {
+    flex: 1, 
+    flexDirection: "row", 
+    justifyContent: "center",
+    alignItems: "center",
+    maxHeight: 45,
+    padding: 6,
+    maxWidth: 130, 
     borderWidth: 1, 
+    borderRadius: 24, 
+    borderColor: "#6351a9",
+    backgroundColor: "#FFFFFF",
+    marginRight: 6,
+  },
+  rent_now_button: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 12, 
+    marginBottom: 0, 
+    height: 55,
+    borderWidth: 0,
     borderRadius: 8, 
-    borderColor: "#ccc",
     backgroundColor: "#6351a9",
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    shadowOffset: { width: 0, height: 6 },
+    elevation: 4,
   },
   rent_now_button_text: {
+    fontWeight: "bold",
+    fontSize: 20,
+    marginLeft: 3,
     color: "#fff",
   },
   buttom_bar: {
@@ -163,13 +215,14 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingTop: 16,
     paddingRight: 16,
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   tags_container: {
     flex: 1, 
     flexDirection: "row", 
-    justifyContent: "space-between",
-    maxHeight: 45, 
+    justifyContent: "flex-start",
+    padding: 0,
+    maxHeight: 38, 
     marginBottom: 10,
     marginLeft: 16,
     marginRight: 16, 
@@ -178,16 +231,43 @@ const styles = StyleSheet.create({
     flex: 1, 
     flexDirection: "row", 
     justifyContent: "center",
-    maxHeight: 45, 
-    padding: 12,
+    alignItems: "center",
+    maxHeight: 45,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 12,
+    borderWidth: 1,
     maxWidth: 100, 
-    borderWidth: 1, 
-    borderRadius: 24, 
-    borderColor: "#ccc",
+    borderColor: "#6351a9",
     backgroundColor: "#FFFFFF",
+    marginRight: 6
   },
   tag_text: {
+    fontSize: 14,
+    color: "#6351a9",
   
   },
-  image: { width: "100%", height: 200, marginTop: 8, borderRadius: 8 },
+  header_owner: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 10,
+    borderBottomWidth: 1,
+    paddingBottom: 2,
+    borderColor: "#6351a9"
+  },
+  info: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  rating: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  image: { width: "100%", 
+    height: 200, 
+    marginTop: 8, 
+    borderRadius: 8,
+    backgroundColor: "#FFFFFF"
+   },
 });
