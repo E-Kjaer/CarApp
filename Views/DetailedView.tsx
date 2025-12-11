@@ -19,7 +19,7 @@ import {useAuth} from "../Contexts/Authcontext";
 import {ProfileStackParamList} from "../Navigation/ProfileStack";
 type DetailedRoute = RouteProp<ExploreStackParamList, "Detailed">;
 type DetailedNav = NativeStackNavigationProp<ExploreStackParamList, "Detailed">;
-type ProfileNav = NativeStackNavigationProp<ProfileStackParamList, "Login">
+type ProfileNav = NativeStackNavigationProp<ProfileStackParamList>
 
 interface Car {
   car_id: number;
@@ -49,7 +49,7 @@ export default function DetailedView() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const navigation = useNavigation()
-  const login = useNavigation<NativeStackNavigationProp<ProfileStackParamList>>();
+  const login = useNavigation<ProfileNav>();
   const { params } = useRoute<DetailedRoute>();
   const [car, setCar] = useState<Car>();
   const [owner, setOwner] = useState<Owner>();
@@ -166,7 +166,8 @@ export default function DetailedView() {
             <Text>{owner.phonenumber}</Text>
           </View>
         </View>
-        <View style={styles.buttom_bar}>
+        {user && (
+          <View style={styles.buttom_bar}>
           <Pressable
             style={styles.rent_now_button}
             onPress={() => {
@@ -184,6 +185,24 @@ export default function DetailedView() {
             </Text>
           </Pressable>
         </View>
+        )}
+        {!user && (
+          <View style={styles.buttom_bar}>
+          <Pressable
+            style={styles.rent_now_button}
+            onPress={() => {
+              login.navigate("Profile");
+            }}
+          >
+            
+            <Text style={styles.rent_now_button_text}>
+              Login
+            </Text>
+          </Pressable>
+        </View>
+        )}
+      
+        
       </View>
     );
 }

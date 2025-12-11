@@ -100,7 +100,7 @@ export default function BookingPage() {
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });
-              const nav = useNavigation();
+              //const nav = useNavigation();
               myBooking.navigate("BookingList")
 
               Alert.alert(
