@@ -100,9 +100,9 @@ export default function BookingPage() {
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });
-              //const nav = useNavigation();
-              myBooking.navigate("BookingList")
-
+              navigation.goBack()
+              navigation.goBack()
+              navigation.navigate("Bookings", { screen: "BookingList" });
               Alert.alert(
                 "Booking Confirmed",
                 `From ${start_date} to ${end_date}`,

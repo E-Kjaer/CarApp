@@ -193,9 +193,13 @@ export default function DetailedView() {
               login.navigate("Profile");
             }}
           >
-            
+            <Ionicons
+              name={"person-outline"}
+              size={20}
+              color={"white"}
+            ></Ionicons>
             <Text style={styles.rent_now_button_text}>
-              Login
+              Sign In
             </Text>
           </Pressable>
         </View>
