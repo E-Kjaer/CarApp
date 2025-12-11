@@ -7,10 +7,9 @@ import { Calendar } from "react-native-calendars";
 import { Alert } from "react-native";
 import api from "../api";
 
-
 type BookingNav = NativeStackNavigationProp<ExploreStackParamList, "Booking">;
 
-// local YYYY-MM-DD 
+// local YYYY-MM-DD
 function todayISO() {
   const date = new Date();
   const timezone = date.getTimezoneOffset() * 60000;
@@ -35,11 +34,14 @@ export default function BookingPage() {
     if (!start_date) {
       setStartDate(picked);
       return;
-    } 
+    }
 
     if (!end_date) {
       if (picked == start_date) {
-        Alert.alert("Invalid dates", "End date must be different from the start date.");
+        Alert.alert(
+          "Invalid dates",
+          "End date must be different from the start date.",
+        );
         return;
       }
       if (picked < start_date) {
@@ -56,39 +58,50 @@ export default function BookingPage() {
   };
 
   const markedDates: Record<string, any> = {};
-  if (start_date) markedDates[start_date] = { selected: true, selectedColor: "blue" };
-  if (end_date) markedDates[end_date] = { selected: true, selectedColor: "green" };
+  if (start_date)
+    markedDates[start_date] = { selected: true, selectedColor: "blue" };
+  if (end_date)
+    markedDates[end_date] = { selected: true, selectedColor: "green" };
 
   return (
     <View style={styles.screen}>
       <View style={styles.content}>
-        <Text style={styles.headerTxt}>How long would you like to book the vehicle?</Text>
+        <Text style={styles.headerTxt}>
+          How long would you like to book the vehicle?
+        </Text>
 
         <Calendar
           onDayPress={onDayPress}
           markedDates={markedDates}
           // cant select past dates
-          minDate={today} 
+          minDate={today}
           disableAllTouchEventsForDisabledDays
         />
 
         <Text>
-          Start: {start_date || "—"}{"\n"}End: {end_date || "—"}
+          Start: {start_date || "—"}
+          {"\n"}End: {end_date || "—"}
         </Text>
         <Pressable
-          style={[styles.button, (!start_date || !end_date) && { opacity: 0.5 }]}
+          style={[
+            styles.button,
+            (!start_date || !end_date) && { opacity: 0.5 },
+          ]}
           disabled={!start_date || !end_date}
           onPress={async () => {
             try {
-              await api.post("/insertRents", {
-                renter_id: 2, 
-                car_id: 1,    
+              await api.post("/rents", {
+                renter_id: 2,
+                car_id: 1,
                 start_date: start_date.split("-").join(""),
                 end_date: end_date.split("-").join(""),
               });
               navigation.goBack();
 
-              Alert.alert("Booking Confirmed", `From ${start_date} to ${end_date}`);
+              Alert.alert(
+                "Booking Confirmed",
+                `From ${start_date} to ${end_date}`,
+              );
             } catch (err: any) {
               console.log("Insert rent failed (catch):", err);
               Alert.alert("Error", "Booking failed.");
