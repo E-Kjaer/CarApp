@@ -1,17 +1,24 @@
-import React from 'react';
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import type { ImageSourcePropType } from 'react-native';
+import React from "react";
+import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
+import type { ImageSourcePropType } from "react-native";
 
 interface CarProps {
   image: ImageSourcePropType;
   brand: string;
   model: string;
-  location: string
+  location: string;
   rental_price: number; // per day, in DKK
   onPressRent?: () => void;
 }
 
-const CarRentalCard = ({ image, brand, model, location, rental_price, onPressRent }: CarProps) => {
+const CarRentalCard = ({
+  image,
+  brand,
+  model,
+  location,
+  rental_price,
+  onPressRent,
+}: CarProps) => {
   return (
     <View style={styles.card}>
       {/* Left: car image */}
@@ -55,17 +62,18 @@ export default CarRentalCard;
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row',
-    backgroundColor: '#fff',
+    flexDirection: "row",
+    backgroundColor: "#fff",
     borderRadius: 24,
     padding: 16,
     gap: 16,
     flex: 1,
     //width: 500,
     margin: 10,
+    alignItems: "center",
 
     // subtle drop shadow
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.08,
     shadowRadius: 12,
     shadowOffset: { width: 0, height: 6 },

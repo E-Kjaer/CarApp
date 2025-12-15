@@ -58,12 +58,12 @@ db.serialize(() => {
 
   // Indsætter dummy data ind til alle tabellerne
   db.run(`INSERT INTO users (email, name, phonenumber, password, is_owner, rating) VALUES
-  ('alice@example.com', 'Alice Johnson', '+14155550111', 'pass123', 1, 4.9),
-  ('bob@example.com', 'Bob Martinez', '+14155550222', 'pass456', 0, 4.2),
-  ('charlie@example.com', 'Charlie Smith', '+14155550333', 'pass789', 0, 3.8),
-  ('diana@example.com', 'Diana Prince', '+14155550444', 'pass321', 1, 4.7),
-  ('ethan@example.com', 'Ethan Hunt', '+14155550555', 'pass654', 0, 4.5),
-  ('test', 'Andreas The G', '12345678', '$2b$05$.IytyPJtWSZnI6H479Unde3vBlD4PRzX8IAG1FhvMFv3oc3AJz4lq', '0', 5.0)
+    ('alice@example.com', 'Alice Johnson', '+14155550111', '$2b$05$Vxz02EdSSmHQGIHMRnOjIOS4n2w53eUOr0Uhqbgx1hOb52EvnS8bG', 1, 4.9),
+    ('bob@example.com', 'Bob Martinez', '+14155550222', '$2b$05$Vxz02EdSSmHQGIHMRnOjIOS4n2w53eUOr0Uhqbgx1hOb52EvnS8bG', 0, 4.2),
+    ('charlie@example.com', 'Charlie Smith', '+14155550333', '$2b$05$Vxz02EdSSmHQGIHMRnOjIOS4n2w53eUOr0Uhqbgx1hOb52EvnS8bG', 0, 3.8),
+    ('diana@example.com', 'Diana Prince', '+14155550444', '$2b$05$Vxz02EdSSmHQGIHMRnOjIOS4n2w53eUOr0Uhqbgx1hOb52EvnS8bG', 1, 4.7),
+    ('ethan@example.com', 'Ethan Hunt', '+14155550555', '$2b$05$Vxz02EdSSmHQGIHMRnOjIOS4n2w53eUOr0Uhqbgx1hOb52EvnS8bG', 0, 4.5),
+    ('test', 'Andreas The G', '12345678', '$2b$05$.IytyPJtWSZnI6H479Unde3vBlD4PRzX8IAG1FhvMFv3oc3AJz4lq', '0', 5.0)
 `);
 
   db.run(`INSERT INTO cars (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES
@@ -140,15 +140,11 @@ app.get("/cars/:id/rents", (req, res) => {
 
 app.get("/users/:id/cars", (req, res) => {
   const { id } = req.params;
-  db.all(
-    "SELECT cars.* FROM cars WHERE owner_id = ?",
-    [id],
-    (err, rows) => {
-      if (err) return res.status(500).json({ error: err.message });
-      if (!rows) return res.status(404).json({ error: "rents not found" });
-      res.json(rows);
-    },
-  );
+  db.all("SELECT cars.* FROM cars WHERE owner_id = ?", [id], (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!rows) return res.status(404).json({ error: "rents not found" });
+    res.json(rows);
+  });
 });
 
 app.get("/users/:id/rents", (req, res) => {
