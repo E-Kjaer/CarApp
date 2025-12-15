@@ -2,7 +2,8 @@ import React from "react";
 import { Text, View, StyleSheet, Image, TouchableOpacity } from "react-native";
 import type { ImageSourcePropType } from "react-native";
 
-const formatDate = (s: string) => `${s.slice(0,4)}-${s.slice(4,6)}-${s.slice(6,8)}`;
+const formatDate = (s: string) =>
+  `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}`;
 
 interface CarProps {
   image: ImageSourcePropType;
@@ -35,13 +36,12 @@ const BookedCarCard = ({
           <View style={{ flexShrink: 1 }}>
             <Text style={styles.brand}>{brand}</Text>
             <Text style={styles.model}>{model}</Text>
-            <Text>{location}</Text>
+            <Text style={styles.location}>{location}</Text>
           </View>
-
-          <View>
-            <Text>Start: {formatDate(start_date)}</Text>
-            <Text>End: {formatDate(end_date)}</Text>
-          </View>
+        </View>
+        <View style={{ marginTop: 8 }}>
+          <Text>Start: {formatDate(start_date)}</Text>
+          <Text>End: {formatDate(end_date)}</Text>
         </View>
       </View>
     </View>
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     flex: 1,
     //width: 500,
     margin: 10,
+    alignItems: "center",
 
     // subtle drop shadow
     shadowColor: "#000",
@@ -70,14 +71,15 @@ const styles = StyleSheet.create({
   },
 
   carImage: {
-    width: 120,
-    height: 100,
+    width: 140,
+    height: 120,
     borderRadius: 16,
     resizeMode: "contain",
   },
 
   details: {
     flex: 1,
+    flexDirection: "column",
     paddingVertical: 4,
   },
 
@@ -97,5 +99,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: "#6ea4b3",
+  },
+
+  location: {
+    //marginTop: 4,
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
