@@ -169,7 +169,7 @@ export default function DetailedView() {
           <Pressable
             style={styles.rent_now_button}
             onPress={() => {
-              navigation.navigate("Booking");
+              navigation.navigate("Booking", { car_id: car.car_id });
             }}
           >
             <Ionicons

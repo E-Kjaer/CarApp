@@ -11,6 +11,8 @@ import {useAuth} from "../Contexts/Authcontext";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import MyBookingsStack from "./MyBookings";
 
+import BookingList from "../Views/MyBookingsView";
+
 export type RootTabParamList = {
     Home: undefined;
     Settings: undefined;
