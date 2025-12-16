@@ -4,6 +4,7 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  Alert,
 } from "react-native";
 import { useAuth } from "../Contexts/Authcontext";
 import { useState } from "react";
@@ -43,13 +44,20 @@ export default function SignupScreen({ navigation }: any) {
       })
       .catch((error) => {
         console.log(error);
+        Alert.alert("Network error", "The server could not be reached");
       });
   };
 
   return (
-    <View style={{ justifyContent: "center", marginTop: insets.top }}>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        paddingTop: "auto",
+      }}
+    >
       <View style={styles.outerbox}>
-        <Text>Sign Up</Text>
+        <Text style={{ marginBottom: 5, fontWeight: "bold" }}>Sign Up</Text>
         <TextInput
           placeholder="Email"
           value={email}
@@ -93,7 +101,7 @@ export default function SignupScreen({ navigation }: any) {
         </View>
 
         <TouchableOpacity
-          style={styles.loginButton}
+          style={styles.signupButton}
           onPress={() => signUp(password, email, name, phonenumber, is_owner)}
         >
           <Text>Sign Up</Text>
@@ -124,7 +132,10 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 3,
   },
-  loginButton: {
+  checkbox: {
+    marginRight: 8,
+  },
+  signupButton: {
     backgroundColor: "#ffffff",
     borderWidth: 1,
     borderColor: "#ccc",
@@ -137,8 +148,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 3,
-  },
-  checkbox: {
-    marginRight: 8,
   },
 });
