@@ -282,38 +282,29 @@ app.post("/users", async (req, res) => {
 });
 
 app.post("/cars", (req, res) => {
-  const {
-    brand,
-    model,
-    description,
-    price,
-    fuel_type,
-    range,
-    seats,
-    location,
-    image,
-    owner_id,
-  } = req.body;
+  const cars = req.body;
 
-  db.run(
+  let sqlStmt = db.prepare(
     "INSERT INTO cars (brand, model, description, price, fuel_type, range, seats, location, image, owner_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-    [
-      brand,
-      model,
-      description,
-      price,
-      fuel_type,
-      range,
-      seats,
-      location,
-      image,
-      owner_id,
-    ],
-    function (err) {
-      if (err) return res.status(500).json({ error: err.message });
-      return res.json({ car_id: this.lastID });
-    },
   );
+  cars.forEach((car) =>
+    sqlStmt.run(
+      car.brand,
+      car.model,
+      car.description,
+      car.price,
+      car.fuel_type,
+      car.range,
+      car.seats,
+      car.location,
+      car.image,
+      car.owmer_id,
+    ),
+  );
+  sqlStmt.finalize((finalerror) => {
+    if (finalerror) return res.status(500).json({ error: finalerror.message });
+    return res.status(200).json("Cars successfully added");
+  });
 });
 
 app.post("/rents", (req, res) => {
