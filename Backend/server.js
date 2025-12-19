@@ -72,7 +72,8 @@ db.serialize(() => {
     ('BMW', 'X5', 'Luxury SUV with spacious interior.', 600, 'Hybrid', 650, 5, 'Palo Alto, CA', 'Bmv_X5.png', 1),
     ('Honda', 'Civic', 'Compact and efficient car.', 220, 'Gasoline', 500, 5, 'Berkeley, CA', 'Honda_Civic.png', 4),
     ('Ford', 'Mustang', 'Sporty car with great performance.', 550, 'Gasoline', 400, 4, 'San Jose, CA', 'Ford_Mustang.png', 1),
-    ('Lincoln', 'MKT', 'Luxury limousine.', 800, 'Gasoline', 400, 10, 'Los Angeles, CA', 'Lincoln_MKT_Luxury.png', 1)
+    ('Lincoln', 'MKT', 'Luxury limousine.', 800, 'Gasoline', 400, 10, 'Los Angeles, CA', 'Lincoln_MKT_Luxury.png', 1),
+    ('Lotus', 'Elise', 'Lightweight sporty cars made from glass fibre', 650, 'Gasoline', 400, 2, 'Kolding, DK', 'Lotus_Elise.jpg', 1)
 `);
 
   db.run(`INSERT INTO rents (renter_id, car_id, start_date, end_date) VALUES
